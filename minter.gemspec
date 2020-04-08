@@ -1,10 +1,12 @@
+# frozen_string_literal: true
+
 Gem::Specification.new do |spec|
   spec.name = "minter"
   spec.version = "0.0.1"
   spec.authors = ["Alexander Nikolaev"]
 
-  spec.summary       = %q{This is a pure Ruby SDK for working with Minter blockchain}
-  spec.description   = %q{This is a pure Ruby SDK for working with Minter blockchain}
+  spec.summary       = "This is a pure Ruby SDK for working with Minter blockchain"
+  spec.description   = "This is a pure Ruby SDK for working with Minter blockchain"
   spec.homepage      = "https://github.com/MinterTeam/minter-ruby-sdk"
   spec.license       = "MIT"
   spec.required_ruby_version = Gem::Requirement.new(">= 2.3.0")
