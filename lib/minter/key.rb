@@ -1,3 +1,4 @@
+# frozen_string_literal: true
 
 module Minter
   module Key
@@ -8,7 +9,6 @@ module Minter
     def self.private_key_from_mnemonic(mnemonic)
       Minter::WalletFfi.PrivateKeyFromMnemonic(mnemonic)
     end
-
 
     def self.public_key_from_private_key(private_key)
       Minter::WalletFfi.PublicKeyFromPrivateKey(private_key)
@@ -27,5 +27,3 @@ module Minter
     end
   end
 end
-
-

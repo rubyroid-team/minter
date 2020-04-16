@@ -11,5 +11,5 @@ require "minter"
 # (If you use this, don't forget to add pry to your Gemfile!)
 Pry.start
 
-#require "irb"
-#IRB.start(__FILE__)
+# require "irb"
+# IRB.start(__FILE__)
