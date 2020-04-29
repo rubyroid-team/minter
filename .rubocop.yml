@@ -2,3 +2,5 @@ Metrics/LineLength:
   Max: 150
 Style/StringLiterals:
   EnforcedStyle: double_quotes
+Style/Documentation:
+  Enabled: false

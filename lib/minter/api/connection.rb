@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-require 'http'
-require_relative 'errors'
-require_relative 'result'
+require "http"
+require_relative "errors"
+require_relative "result"
 
 module Minter
   module Api
     module Connection
       DEFAULT_HEADERS = [
-        CONTENT_TYPE_HEADER = 'application/json',
-        ACCEPT_HEADER = 'application/json'
+        CONTENT_TYPE_HEADER = "application/json",
+        ACCEPT_HEADER = "application/json"
       ].freeze
 
       def check_params(params, allowed_params)
@@ -20,7 +20,7 @@ module Minter
 
       private
 
-      def get(path, params: {})
+      def get(path, params = {})
         response = connection.get(build_url(config[:node_url], path), params: params)
 
         Minter::Api::Result.new(response)
@@ -31,7 +31,7 @@ module Minter
       end
 
       def build_url(node_url, path)
-        URI.parse(node_url+path)
+        URI.parse(node_url + path)
       end
 
       def new_connection

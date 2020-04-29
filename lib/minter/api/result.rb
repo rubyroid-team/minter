@@ -28,7 +28,7 @@ module Minter
       private
 
       def handle_error_response(response)
-        response_body = response.body.to_s
+        response_body = JSON.parse(response.body)
 
         case response.status.code
         when 400
@@ -39,6 +39,8 @@ module Minter
           raise ForbiddenError, response_body
         when 404
           raise NotFoundError, response.uri.to_s
+        when 412
+          raise PreconditionFailedError, response_body["error"]
         when 429
           raise RateLimitError, response_body
         when 500

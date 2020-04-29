@@ -1,9 +1,9 @@
+# frozen_string_literal: true
 
-puts File.dirname(__FILE__) 
-Dir[File.dirname(__FILE__)+'/resources/*.rb' ].each do |file|
+Dir[File.dirname(__FILE__) + "/resources/*.rb"].each do |file|
   require_relative file
 end
-require_relative 'connection'
+require_relative "connection"
 
 module Minter
   module Api
@@ -24,7 +24,7 @@ module Minter
       API_VERSION = 2
 
       def initialize(args = {})
-        self.node_url = ENV['NODE_URL']
+        self.node_url = ENV["NODE_URL"]
         self.connect_timeout = args[:connect_timeout] || DEFAULT_TIMEOUT
         self.read_timeout = args[:read_timeout] || DEFAULT_TIMEOUT
         self.write_timeout = args[:write_timeout] || DEFAULT_TIMEOUT
@@ -38,7 +38,7 @@ module Minter
           connect_timeout: connect_timeout,
           read_timeout: read_timeout,
           write_timeout: write_timeout,
-          proxy: proxy,
+          proxy: proxy
         }
       end
     end

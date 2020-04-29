@@ -1,8 +1,10 @@
+# frozen_string_literal: true
+
 module Minter
   module Api
     module Status
       def status
-        path =  '/status'            
+        path = "/status"
         get(path)
       end
     end
