@@ -56,23 +56,42 @@ func createSignedTransaction(params TransactionParams) transaction.SignedTransac
 	return signedTransaction
 }
 
-func transactionParamsFromSignedTransaction(signedTransaction transaction.SignedTransaction) TransactionParams {
-	var params TransactionParams
-	params.Nonce = signedTransaction.transaction.Nonce()
+type CreateCoinTransactionParams struct {
+	Name       string
+	Symbol     string
+	InitialAmount *big.Int
+	InitialReserve *big.Int
+	ReserveRation       uint
 
-	return params
+	ChainId    byte
+	PrivateKey string
+	Nonce      uint64
+	GasPrice   uint8
+	GasCoin    string
 }
 
-//type TransactionParams struct {
-//	Nonce      uint64
-//	ChainId    byte
-//	Type       uint8
-//	AddressTo     string
-//	Value  *big.Int
-//	Coin   string
-//	GasPrice   uint8
-//	GasCoin    string
-//	PrivateKey string
-//}
+
+
+//export SignCreateCoinTransaction
+func SignCreateCoinTransaction(paramsJson *C.char) *C.char {
+	var params CreateCoinTransactionParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	json.Unmarshal(jsonBytes, &params)
+
+	data := transaction.NewCreateCoinData().
+		SetName("SUPER COIN TEST").
+		SetSymbol("SUPRA").
+		SetInitialAmount(params.InitialAmount).
+		SetInitialReserve(params.InitialReserve).
+		SetConstantReserveRatio(params.ReserveRation)
+
+
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
+	encode, _ := signedTransaction.Encode()
+	return C.CString(encode)
+}
+
 
 func main() {}
