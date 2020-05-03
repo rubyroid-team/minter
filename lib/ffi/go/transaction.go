@@ -127,9 +127,9 @@ func SignSellCoinTransaction(paramsJson *C.char) *C.char {
 }
 
 type BuyCoinParams struct {
-	CoinToBuy         string
-	ValueToBuy       *big.Int
-	CoinToSell        string
+	CoinToBuy          string
+	ValueToBuy         *big.Int
+	CoinToSell         string
 	MaximumValueToSell *big.Int
 
 	ChainId    byte
@@ -150,6 +150,38 @@ func SignBuyCoinTransaction(paramsJson *C.char) *C.char {
 		SetValueToBuy(params.ValueToBuy).
 		SetCoinToSell(params.CoinToSell).
 		SetMaximumValueToSell(params.MaximumValueToSell)
+
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
+	encode, _ := signedTransaction.Encode()
+	return C.CString(encode)
+}
+
+type SellAllCoinParams struct {
+	CoinToSell        string
+	CoinToBuy         string
+	ValueToBuy        *big.Int
+	MinimumValueToBuy *big.Int
+
+	ChainId    byte
+	PrivateKey string
+	Nonce      uint64
+	GasPrice   uint8
+	GasCoin    string
+}
+
+//export SignSellAllCoinTransaction
+func SignSellAllCoinTransaction(paramsJson *C.char) *C.char {
+	var params SellAllCoinParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	json.Unmarshal(jsonBytes, &params)
+
+	data := transaction.NewSellAllCoinData().
+		SetCoinToSell(params.CoinToSell).
+		SetCoinToBuy(params.CoinToBuy).
+		SetMinimumValueToBuy(params.MinimumValueToBuy)
 
 	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
