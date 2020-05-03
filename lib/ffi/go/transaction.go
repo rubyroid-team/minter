@@ -3,7 +3,6 @@ package main
 import (
 	"C"
 	"encoding/json"
-	"fmt"
 	"github.com/MinterTeam/minter-go-sdk/transaction"
 	"math/big"
 )
@@ -72,8 +71,6 @@ type CreateCoinTransactionParams struct {
 	GasCoin    string
 }
 
-
-
 //export SignCreateCoinTransaction
 func SignCreateCoinTransaction(paramsJson *C.char) *C.char {
 	var params CreateCoinTransactionParams
@@ -81,18 +78,16 @@ func SignCreateCoinTransaction(paramsJson *C.char) *C.char {
 	json.Unmarshal(jsonBytes, &params)
 
 	data := transaction.NewCreateCoinData().
-		SetName("SUPER COIN TEST").
-		SetSymbol("SUPRA").
+		SetName(params.Name).
+		SetSymbol(params.Symbol).
 		SetInitialAmount(params.InitialAmount).
 		SetInitialReserve(params.InitialReserve).
 		SetConstantReserveRatio(params.ReserveRation).
 		SetMaxSupply(params.MaxSupply)
 
-
 	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(1).SetGasCoin(params.GasCoin)
 
-	fmt.Println(params.GasPrice)
 
 	signedTransaction, _ := tx.Sign(params.PrivateKey)
 	encode, _ := signedTransaction.Encode()

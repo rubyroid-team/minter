@@ -12,3 +12,5 @@
 
 .idea/
 example/
+
+lib/ffi/so/*.h
