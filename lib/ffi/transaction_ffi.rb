@@ -48,6 +48,23 @@ end
 # tx = Minter::TransactionFfi.SignCreateCoinTransaction(tx_params.to_json)
 # Minter::Api::Client.new.send_transaction(transaction: tx)
 
+# ===SELL_COIN===
+# tx_params = {
+#     CoinToSell: "DEVDEV",
+#     ValueToSell: 1000,
+#     CoinToBuy: "MNT",
+#     MinimumValueToBuy: 100000000,
+#
+#     Nonce: 31,
+#     ChainId: 2,
+#     GasCoin: "MNT",
+#     GasPrice: 1,
+#     PrivateKey: "290cd647206bea71ec06d8dfacce30c872aea3fb1ea333b7f475b70467250ca0"
+# }
+#
+# tx = Minter::TransactionFfi.SignSellCoinTransaction(tx_params.to_json)
+# Minter::Api::Client.new.send_transaction(transaction: tx)
+
 # ===BUY_COIN===
 # tx_params = {
 #     CoinToBuy: "DEVDEV",
