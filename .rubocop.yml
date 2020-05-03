@@ -4,3 +4,6 @@ Style/StringLiterals:
   EnforcedStyle: double_quotes
 Style/Documentation:
   Enabled: false
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
