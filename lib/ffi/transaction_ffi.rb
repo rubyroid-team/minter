@@ -9,6 +9,7 @@ module Minter
     attach_function :TransactionHash, [:string], :string
     attach_function :DecodeTransaction, [:string], :string
     attach_function :SignCreateCoinTransaction, [:string], :string
+    attach_function :SignSellCoinTransaction, [:string], :string
   end
 end
 
