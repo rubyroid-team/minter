@@ -257,4 +257,31 @@ func SignDelegateTransaction(paramsJson *C.char) *C.char {
 	return C.CString(encode)
 }
 
+type SetCandidateOffParams struct {
+	PubKey string
+
+	ChainId    byte
+	PrivateKey string
+	Nonce      uint64
+	GasPrice   uint8
+	GasCoin    string
+}
+
+//export SignSetCandidateOffTransaction
+func SignSetCandidateOffTransaction(paramsJson *C.char) *C.char {
+	var params SetCandidateOffParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	json.Unmarshal(jsonBytes, &params)
+
+	data := transaction.NewSetCandidateOffData().
+		MustSetPubKey(params.PubKey)
+
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
+	encode, _ := signedTransaction.Encode()
+	return C.CString(encode)
+}
+
 func main() {}
