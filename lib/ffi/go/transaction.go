@@ -257,7 +257,7 @@ func SignDelegateTransaction(paramsJson *C.char) *C.char {
 	return C.CString(encode)
 }
 
-type SetCandidateOffParams struct {
+type SetCandidateParams struct {
 	PubKey string
 
 	ChainId    byte
@@ -269,11 +269,28 @@ type SetCandidateOffParams struct {
 
 //export SignSetCandidateOffTransaction
 func SignSetCandidateOffTransaction(paramsJson *C.char) *C.char {
-	var params SetCandidateOffParams
+	var params SetCandidateParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	json.Unmarshal(jsonBytes, &params)
 
 	data := transaction.NewSetCandidateOffData().
+		MustSetPubKey(params.PubKey)
+
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
+	encode, _ := signedTransaction.Encode()
+	return C.CString(encode)
+}
+
+//export SignSetCandidateOnTransaction
+func SignSetCandidateOnTransaction(paramsJson *C.char) *C.char {
+	var params SetCandidateParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	json.Unmarshal(jsonBytes, &params)
+
+	data := transaction.NewSetCandidateOnData().
 		MustSetPubKey(params.PubKey)
 
 	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
