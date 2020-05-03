@@ -130,7 +130,7 @@ type BuyCoinParams struct {
 	CoinToBuy         string
 	ValueToBuy       *big.Int
 	CoinToSell        string
-	MinimumValueToSell *big.Int
+	MaximumValueToSell *big.Int
 
 	ChainId    byte
 	PrivateKey string
@@ -149,7 +149,7 @@ func SignBuyCoinTransaction(paramsJson *C.char) *C.char {
 		SetCoinToBuy(params.CoinToBuy).
 		SetValueToBuy(params.ValueToBuy).
 		SetCoinToSell(params.CoinToSell).
-		SetMaximumValueToSell(params.MinimumValueToSell)
+		SetMaximumValueToSell(params.MaximumValueToSell)
 
 	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)

@@ -10,9 +10,9 @@ module Minter
     attach_function :DecodeTransaction, [:string], :string
     attach_function :SignCreateCoinTransaction, [:string], :string
     attach_function :SignSellCoinTransaction, [:string], :string
+    attach_function :SignBuyCoinTransaction, [:string], :string
   end
 end
-
 
 # ===SEND MNT===
 # tx_params = {
@@ -28,8 +28,6 @@ end
 # }
 # tx = Minter::TransactionFfi.SignTransaction(tx_params.to_json)
 # Minter::Api::Client.new.send_transaction(transaction: tx)
-
-
 
 # ==CREATE COIN==
 # tx_params = {
@@ -48,4 +46,21 @@ end
 # }
 #
 # tx = Minter::TransactionFfi.SignCreateCoinTransaction(tx_params.to_json)
+# Minter::Api::Client.new.send_transaction(transaction: tx)
+
+# ===BUY_COIN===
+# tx_params = {
+#     CoinToBuy: "DEVDEV",
+#     ValueToBuy: 1000,
+#     CoinToSell: "MNT",
+#     MaximumValueToSell: 100000000,
+#
+#     Nonce: 31,
+#     ChainId: 2,
+#     GasCoin: "MNT",
+#     GasPrice: 1,
+#     PrivateKey: "290cd647206bea71ec06d8dfacce30c872aea3fb1ea333b7f475b70467250ca0"
+# }
+#
+# tx = Minter::TransactionFfi.SignBuyCoinTransaction(tx_params.to_json)
 # Minter::Api::Client.new.send_transaction(transaction: tx)
