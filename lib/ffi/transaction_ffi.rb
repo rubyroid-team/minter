@@ -11,6 +11,7 @@ module Minter
     attach_function :SignCreateCoinTransaction, [:string], :string
     attach_function :SignSellCoinTransaction, [:string], :string
     attach_function :SignBuyCoinTransaction, [:string], :string
+    attach_function :SignSellAllCoinTransaction, [:string], :string
   end
 end
 
