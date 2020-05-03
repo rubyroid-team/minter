@@ -191,4 +191,39 @@ func SignSellAllCoinTransaction(paramsJson *C.char) *C.char {
 	return C.CString(encode)
 }
 
+type DeclareCandidacyParams struct {
+	Address    string
+	PubKey     string
+	Commission uint
+	Coin       string
+	Stake      *big.Int
+
+	ChainId    byte
+	PrivateKey string
+	Nonce      uint64
+	GasPrice   uint8
+	GasCoin    string
+}
+
+//export SignDeclareCandidacyTransaction
+func SignDeclareCandidacyTransaction(paramsJson *C.char) *C.char {
+	var params DeclareCandidacyParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	json.Unmarshal(jsonBytes, &params)
+
+	data, _ := transaction.NewDeclareCandidacyData().
+		MustSetPubKey(params.PubKey).
+		SetCommission(params.Commission).
+		SetCoin(params.Coin).
+		SetStake(params.Stake).
+		SetAddress(params.Address)
+
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
+	encode, _ := signedTransaction.Encode()
+	return C.CString(encode)
+}
+
 func main() {}
