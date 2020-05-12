@@ -5,13 +5,13 @@ module Minter
     module CandidateResource
       def candidate(public_key:, height: nil)
         path = "/candidate"
-        params = { address: address, height: height }.compact
+        params = { pub_key: public_key, height: height }.compact
         get(path, params)
       end
 
-      def candidates(public_key:, height: nil, include_stakes: nil)
+      def candidates(height: 1, include_stakes: nil)
         path = "/candidates"
-        params = { address: address, height: height, include_stakes: nil }.compact
+        params = {height: height, include_stakes: nil }.compact
         get(path, params)
       end
     end

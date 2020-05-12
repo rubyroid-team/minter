@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::Api::AddressResource do
   describe "address" do
-    let(:address) {"Mx251cb0043a0240779103aa7c210f638f887699f8"}
+    let(:address) { "Mx251cb0043a0240779103aa7c210f638f887699f8" }
     it "get address info" do
       client = Minter::Api::Client.new
       response = client.address(address: address)
@@ -27,5 +27,4 @@ RSpec.describe Minter::Api::AddressResource do
       expect(response.body["result"]["transaction_count"]).not_to be_nil
     end
   end
-
 end
