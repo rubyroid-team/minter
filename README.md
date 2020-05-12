@@ -276,44 +276,36 @@ Returns events at given height.
 func (a *Api) EventsAtHeight(height int) (*EventsResult, error) {...}
 ```
 
-##### Example
-
-```go
-response, err := minterClient.EventsAtHeight(12)
-
-// &{Events:[{Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp738da41ba6a7b7d69b7294afa158b89c5a1b410cbf0c2443c85c5fe24ad1dd1c]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp738da41ba6a7b7d69b7294afa158b89c5a1b410cbf0c2443c85c5fe24ad1dd1c]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp738da41ba6a7b7d69b7294afa158b89c5a1b410cbf0c2443c85c5fe24ad1dd1c]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp6f16c1ff21a6fb946aaed0f4c1fcca272b72fd904988f91d3883282b8ae31ba2]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp6f16c1ff21a6fb946aaed0f4c1fcca272b72fd904988f91d3883282b8ae31ba2]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp6f16c1ff21a6fb946aaed0f4c1fcca272b72fd904988f91d3883282b8ae31ba2]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:111497225000000000000 role:DAO validator_pub_key:Mp9e13f2f5468dd782b316444fbd66595e13dba7d7bd3efa1becd50b42045f58c6]} {Type:minter/RewardEvent Value:map[address:Mx04bea23efb744dc93b4fda4c20bf4a21c6e195f1 amount:111497225000000000000 role:Developers validator_pub_key:Mp9e13f2f5468dd782b316444fbd66595e13dba7d7bd3efa1becd50b42045f58c6]} {Type:minter/RewardEvent Value:map[address:Mx18467bbb64a8edf890201d526c35957d82be3d95 amount:891977800000000000000 role:Validator validator_pub_key:Mp9e13f2f5468dd782b316444fbd66595e13dba7d7bd3efa1becd50b42045f58c6]}]}
-```
 
 ### MaxGas
 
 Returns current max gas.
 
-```go
-func (a *Api) MaxGas() (string, error) {...}
-```
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-##### Example
-
-```go
-response, err := minterClient.MaxGas()
-
-// 100000
+response = client.max_gas
+response.status
+#=>200
+response.body
+#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"100000"}
 ```
 
 ### MinGasPrice
 
 Returns current min gas price.
 
-```go
-func (a *Api) MinGasPrice() (string, error) {...}
-```
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-##### Example
+response = client.min_gas_price
+response.status
+#=>200
+response.body
+#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"1"}
 
-```go
-response, err := minterClient.MinGasPrice()
-
-// 1
 ```
 
 ### MissedBlocks

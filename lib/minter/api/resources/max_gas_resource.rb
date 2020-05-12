@@ -2,7 +2,7 @@
 
 module Minter
   module Api
-    module MmxGasResource
+    module MaxGasResource
       def max_gas
         path = "/max_gas"
         get(path)

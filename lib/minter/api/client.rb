@@ -17,6 +17,8 @@ module Minter
       include Minter::Api::CoinResource
       include Minter::Api::Connection
       include Minter::Api::EstimateResource
+      include Minter::Api::MinGasPriceResource
+      include Minter::Api::MaxGasResource
       include Minter::Api::MissedBlocksResource
       include Minter::Api::NonceResource
       include Minter::Api::Status
