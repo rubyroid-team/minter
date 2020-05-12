@@ -2,7 +2,7 @@
 
 module Minter
   module Api
-    module Status
+    module StatusResource
       def status
         path = "/status"
         get(path)

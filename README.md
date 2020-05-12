@@ -352,8 +352,43 @@ res, _ := minterClient.SendTransaction(signedTransaction)
 
 Returns node status info.
 
-```go
-func (a *Api) Status() (*StatusResult, error) {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+response = client.status
+response.status
+#=>200
+response.body
+#=>
+ {"jsonrpc"=>"2.0",
+   "id"=>"",
+   "result"=>
+    {"version"=>"1.1.6-testnet",
+     "latest_block_hash"=>"E20E0B26DAB8CEE5AC1CB46B5184C63565522978EDF153DA3017C7D34F2D3F30",
+     "latest_app_hash"=>"995C21A980D4E0A7649E56252CB4E279A5820655B717A017FC09FE2E9D841554",
+     "latest_block_height"=>"702448",
+     "latest_block_time"=>"2020-05-12T20:59:23.252868652Z",
+     "keep_last_states"=>"120",
+     "tm_status"=>
+      {"node_info"=>
+        {"protocol_version"=>{"p2p"=>"7", "block"=>"10", "app"=>"6"},
+         "id"=>"4735e67924e611b89fbd3f951441b5e912e226d3",
+         "listen_addr"=>"tcp://0.0.0.0:26656",
+         "network"=>"minter-testnet-08-04",
+         "version"=>"0.33.2",
+         "channels"=>"4020212223303800",
+         "moniker"=>"minter-node-1.testnet.minter.network",
+         "other"=>{"tx_index"=>"on", "rpc_address"=>"tcp://127.0.0.1:26657"}},
+       "sync_info"=>
+        {"latest_block_hash"=>"E20E0B26DAB8CEE5AC1CB46B5184C63565522978EDF153DA3017C7D34F2D3F30",
+         "latest_app_hash"=>"995C21A980D4E0A7649E56252CB4E279A5820655B717A017FC09FE2E9D841554",
+         "latest_block_height"=>"702448",
+         "latest_block_time"=>"2020-05-12T20:59:23.252868652Z",
+         "catching_up"=>false},
+       "validator_info"=>
+        {"address"=>"43253BE55C58BCA3045BEFABEF873944B56E3555", "pub_key"=>{"type"=>"tendermint/PubKeyEd25519", "value"=>"DSmoPlRlOh1fNOVh4BNfHoHLyuFS8fMnqzaFen4y3kw="}, "voting_power"=>"98784385"}}}}
+
 ```
 
 ##### Example
