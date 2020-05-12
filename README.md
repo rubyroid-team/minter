@@ -77,7 +77,7 @@ This is a Ruby SDK for working with **Minter** blockchain
 	    - [Create wallet](#create-wallet)		
 	- [Minter Key](#minter-key)
 	    - [Generate mnemonic](#generate-mnemonic)
-	    - [Get private key from mnemonic](get-private-key-from-mnemonic)
+	    - [Get private key from mnemonic](#get-private-key-from-mnemonic)
 	    - [Get public key from private key](#get-public-key-from-private-key)
 	    - [Get Minter address from public key](#get-minter-address-from-public-key)
 	    - [Get Minter address from private key](#get-minter-address-from-private-key)
@@ -964,7 +964,8 @@ proof, _ := check.Proof()
 
 ### Minter Wallet
 
-* Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
+#### Create wallet
+* This method returns generated seed, private key, public key, mnemonic and Minter address.
 
 ```ruby
 wallet = Minter::Wallet.new
