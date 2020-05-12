@@ -10,9 +10,9 @@ module Minter
         get(path, params)
       end
 
-      def send_transaction(transaction:)
-        params = { tx: transaction }
-        path = "/send_transaction"
+      def transactions(query:, page: 1, per_page: 10)
+        params = { query: query, page: page, per_page: per_page}
+        path = "/transactions"
         get(path, params)
       end
 

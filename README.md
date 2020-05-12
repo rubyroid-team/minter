@@ -402,8 +402,36 @@ response.body
 
 Return transactions by query.
 
-```go
-func (a *Api) Transactions(query string, page int, perPage int) ([]*TransactionResult, error) { {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+query = "tags.tx.coin='MNT'" 
+page = 1
+per_page = 1
+response = client.transactions(query: query, per_page: per_page, page: page)
+response.status
+#=> 200
+response.body
+#=> 
+{"jsonrpc"=>"2.0",
+ "id"=>"",
+ "result"=>
+  [{"hash"=>"9398DB947BC1397212C3F7FBE3D4131E68DDD1CA5AD36860DF5D7700E1C279EB",
+    "raw_tx"=>
+     "f87e82229102018a4d4e540000000000000001a2e18a4d4e540000000000000094a1f103c242237370d409ff5ff9f1817d42f94dda80808001b845f8431ba0a377be8dcab2a0cd005a8b392876724ed97aea4c312dc1081f581384ec938a1da01851f86f174c6d104ebb61cdab4e38056641147777e12e1184d8140c2b85d080",
+    "height"=>"702308",
+    "index"=>0,
+    "from"=>"Mxa1f103c242237370d409ff5ff9f1817d42f94dda",
+    "nonce"=>"8849",
+    "gas"=>"10",
+    "gas_price"=>1,
+    "gas_coin"=>"MNT",
+    "type"=>1,
+    "data"=>{"coin"=>"MNT", "to"=>"Mxa1f103c242237370d409ff5ff9f1817d42f94dda", "value"=>"0"},
+    "payload"=>"",
+    "tags"=>{"tx.type"=>"01", "tx.from"=>"a1f103c242237370d409ff5ff9f1817d42f94dda", "tx.to"=>"a1f103c242237370d409ff5ff9f1817d42f94dda", "tx.coin"=>"MNT"}}]}
+
 ```
 
 ##### Example

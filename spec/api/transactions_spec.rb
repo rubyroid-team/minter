@@ -17,4 +17,19 @@ RSpec.describe Minter::Api::ValidatorsResource do
       end
     end
   end
+
+  describe "transactions" do
+    let(:query) { "tags.tx.coin='MNT'" }
+    let(:page) { 1 }
+    let(:per_page) { 1 }
+
+
+    it "return transactions list" do
+      client = Minter::Api::Client.new
+      response = client.transactions(query: query, page: page, per_page: per_page)
+      expect(response.status).to eq 200
+      expect(response.body).not_to be_nil
+      expect(response.body["result"]).to be_a(Array)
+    end
+  end
 end
