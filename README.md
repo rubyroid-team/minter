@@ -229,61 +229,43 @@ response.body
 #    "max_supply"=>"1000000000000000000000000000000000"}}
 ```
 
-##### Example
-
-```go
-response, err := minterClient.CoinInfoAtHeight("CAPITAL", api.LatestBlockHeight)
-
-// &{Name:Minter Capital Symbol:CAPITAL Volume:160424270982998917252256781 Crr:80 ReserveBalance:57093621687856995327577694}
-```
-
 ### EstimateCoinBuy
 
 Return estimate of buy coin transaction.
 
-```go
-func (a *Api) EstimateCoinBuyAtHeight(coinToSell string, valueToBuy string, coinToBuy string, height int) (*EstimateCoinBuyResult, error) {...}
-```
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-##### Example
-
-```go
-response, err := minterClient.EstimateCoinBuyAtHeight("BIP", "1", "MNT", api.LatestBlockHeight)
-
-// &{WillPay:1 Commission:100000000000000000}
+response = client.estimate_coin_buy(coinToSell: "BIP", valueToBuy: 1, coinToBuy: "MNT")
+response.status
+#=> 200
 ```
 
 ### EstimateCoinSell
 
 Return estimate of sell coin transaction.
 
-```go
-func (a *Api) EstimateCoinSellAtHeight(coinToSell string, valueToSell string, coinToBuy string, height int) (*EstimateCoinSellResult, error) {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+response = client.estimate_coin_sell(coinToSell: "BIP", valueToSell: 1, coinToBuy: "MNT")
+response.status
+#=> 200
 ```
-
-##### Example
-
-```go
-response, err := minterClient.EstimateCoinSellAtHeight("BIP", "1", "MNT", api.LatestBlockHeight)
-
-// &{WillGet:1 Commission:100000000000000000}
-```
-
 ### EstimateTxCommission
 
 Return estimate of transaction.
 
-```go
-func (a *Api) EstimateTxCommission(transaction transaction.SignedTransaction) (*EstimateTxCommissionResult, error) {...}
-```
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-##### Example
+response = client.estimate_tx_comission(transaction: "0xf88522020a8a4d4e540000000000000001abea8a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d49789014d1120d7b1600000808001b845f8431ba07424d88d612132c847c1c92c1f471471fa8034914260223cb547f097e2bd7587a0201fa4d869ba564538996a71e6aa1e2b069d746b8fa0a563e023989986ae91a7")
+response.status
+#=>200
 
-```go
-signedTransaction, _ := transaction.Sign(privateKey)
-response, _ := minterClient.EstimateTxCommission(signedTransaction)
-
-// &{Commission:10000000000000000}
 ```
 
 ### Events
