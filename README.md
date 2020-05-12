@@ -73,7 +73,14 @@ This is a Ruby SDK for working with **Minter** blockchain
 	- [Decode Transaction](#decode-transaction)
 	- [Minter Deep Links](#minter-deep-links)
 	- [Minter Check](#minter-check)
-	- [Minter Wallet](#minter-wallet)		
+	- [Minter Wallet](#minter-wallet)
+	    - [Create wallet](#create-wallet)		
+	- [Minter Key](#minter-key)
+	    - [Minter Key](#minter-key)
+	    - [Minter Key](#minter-key)
+	    - [Minter Key](#minter-key)
+	    - [Minter Key](#minter-key)
+			
 * [Tests](#tests)
 
 
@@ -466,126 +473,185 @@ minterClient.SendTransaction(signedTx123)
 
 Transaction for sending arbitrary coin.
 
-Coin - Symbol of a coin. To - Recipient address in Minter Network. Value - Amount of Coin to send.
+coin - Symbol of a coin.
+address_to - Recipient address in Minter Network.
+value - Amount of Coin to send.
 
 ##### Example
 
-```go
-value := big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)) // 1000000000000000000
-address := "Mx1b685a7c1e78726c48f619c497a07ed75fe00483"
-symbolMNT := "MNT"
-data, _ := transaction.NewSendData().SetCoin(symbolMNT).SetValue(value).SetTo(address)
+```ruby
+Minter::SendCoinTx.new(
+      type: 1,
+      address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
+      value: 24_000_000_000_000_000_000,
+      coin: "MNT",
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 10
+    )
 ```
 
 #### Sell coin transaction
 
 Transaction for selling one coin (owned by sender) in favour of another coin in a system.
 
-CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give. CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get.
+coin_to_sell - Symbol of a coin to give.
+value_to_sell - Amount of CoinToSell to give.
+coin_to_buy - Symbol of a coin to get.
+minimum_value_to_buy - Minimum value of coins to get.
 
 ##### Example
 
-```go
-data := transaction.NewSellCoinData().
-	SetCoinToSell("MNT").
-	SetValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-	SetCoinToBuy("TEST").
-	SetMinimumValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```ruby
+Minter::SellCoinTx.new(
+      coin_to_sell: "MNT",
+      value_to_sell: 1_000_000_000_000_000_000,
+      coin_to_buy: "TEST",
+      minimum_value_to_buy: 1_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Sell all coin transaction
 
 Transaction for selling one coin (owned by sender) in favour of another coin in a system.
 
-CoinToSell - Symbol of a coin to give. ValueToSell - Amount of CoinToSell to give. CoinToBuy - Symbol of a coin to get. MinimumValueToBuy - Minimum value of coins to get.
+coin_to_sell - Symbol of a coin to give.
+coin_to_buy - Symbol of a coin to get.
+minimum_value_to_buy - Minimum value of coins to get.
 
 ##### Example
 
-```go
-data := transaction.NewSellAllCoinData().
-	SetCoinToSell("MNT").
-	SetCoinToBuy("TEST").
-	SetMinimumValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```ruby
+Minter::SellAllCoinTx.new(
+      coin_to_sell: "MNT",
+      coin_to_buy: "TEST",
+      minimum_value_to_buy: 1_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Buy coin transaction
 
 Transaction for buy a coin paying another coin (owned by sender).
 
-CoinToBuy - Symbol of a coin to get. ValueToBuy - Amount of CoinToBuy to get. CoinToSell - Symbol of a coin to give. MaximumValueToSell - Maximum value of coins to sell.
+coin_to_buy - Symbol of a coin to get. value_to_buy - Amount of CoinToBuy to get. coin_to_sell - Symbol of a coin to give. maximum_value_to_sell - Maximum value of coins to sell.
 
 ##### Example
 
-```go
-data := transaction.NewBuyCoinData().
-	SetCoinToBuy("TEST").
-	SetValueToBuy(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-	SetCoinToSell("MNT").
-	SetMaximumValueToSell(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```ruby
+transaction = Minter::BuyCoinTx.new(
+      coin_to_buy: "TEST",
+      value_to_buy: 1_000_000_000_000_000_000,
+      coin_to_sell: "MNT",
+      maximum_value_to_sell: 1_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Create coin transaction
 
 Transaction for creating new coin in a system.
 
-Name - Name of a coin. Arbitrary string up to 64 letters length. Symbol - Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length. InitialAmount - Amount of coins to issue. Issued coins will be available to sender account. InitialReserve - Initial reserve in BIP's. ConstantReserveRatio - CRR, uint, should be from 10 to 100.
+name - Name of a coin. Arbitrary string up to 64 letters length.
+symbol - Symbol of a coin. Must be unique, alphabetic, uppercase, 3 to 10 symbols length.
+initial_amount - Amount of coins to issue. Issued coins will be available to sender account.
+initial_reserve - Initial reserve in BIP's. ConstantReserveRatio - CRR, uint, should be from 10 to 100.
 
 ##### Example
 
-```go
-data := transaction.NewCreateCoinData().
-	SetName("SUPER TEST").
-	SetSymbol("SPRTEST").
-	SetInitialAmount(big.NewInt(0).Mul(big.NewInt(100), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-	SetInitialReserve(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-	SetConstantReserveRatio(10)
+```ruby
+Minter::CreateCoinTx.new(
+      name: "SUPER TEST",
+      symbol: "SPRTEST",
+      initial_amount: 100_000_000_000_000_000_000,
+      initial_reserve: 10_000_000_000_000_000_000,
+      reserve_ratio: 10,
+      max_supply: 1_000_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Declare candidacy transaction
 
 Transaction for declaring new validator candidacy.
 
-Address - Address of candidate in Minter Network. This address would be able to control candidate. Also all rewards will be sent to this address. PubKey - Public key of a validator. Commission - Commission (from 0 to 100) from rewards which delegators will pay to validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+address - Address of candidate in Minter Network. This address would be able to control candidate. Also all rewards will be sent to this address.
+pubkey - Public key of a validator.
+commission - Commission (from 0 to 100) from rewards which delegators will pay to validator.
+coin - Symbol of coin to stake. Stake - Amount of coins to stake.
 
 ##### Example
 
-```go
-data, _ := transaction.NewDeclareCandidacyData().
-	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
-	SetCommission(10).
-	SetCoin("MNT").
-	SetStake(big.NewInt(0).Mul(big.NewInt(5), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-	SetAddress("Mx9f7fd953c2c69044b901426831ed03ee0bd0597a")
+```ruby
+Minter::DeclareCandidacyTx.new(
+      address: "Mx9f7fd953c2c69044b901426831ed03ee0bd0597a",
+      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+      commission: 10,
+      coin: "MNT",
+      stake: 5_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Delegate transaction
 
 Transaction for delegating funds to validator.
 
-PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+pubkey - Public key of a validator.
+coin - Symbol of coin to stake.
+value - Amount of coins to stake.
 
 ##### Example
 
-```go
-data := transaction.NewDelegateData().
-	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
-	SetCoin("MNT").
-	SetValue(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```ruby
+Minter::DelegateTx.new(
+      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+      coin: "MNT",
+      value: 10_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Unbond transaction
 
 Transaction for unbonding funds from validator's stake.
 
-PubKey - Public key of a validator. Coin - Symbol of coin to stake. Stake - Amount of coins to stake.
+pubkey - Public key of a validator.
+coin - Symbol of coin to stake.
+value - Amount of coins to stake.
 
 ##### Example
 
-```go
-data := transaction.NewUnbondData().
-	MustSetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43").
-	SetCoin("MNT").
-	SetValue(big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)))
+```ruby
+Minter::UnbondTx.new(
+      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+      coin: "MNT",
+      value: 10_000_000_000_000_000_000,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Redeem check transaction
@@ -598,10 +664,15 @@ Note that maximum GasPrice is limited to 1 to prevent fraud, because GasPrice is
 
 ##### Example
 
-```go
-data := transaction.NewRedeemCheckData().
-	MustSetProof("da021d4f84728e0d3d312a18ec84c21768e0caa12a53cb0a1452771f72b0d1a91770ae139fd6c23bcf8cec50f5f2e733eabb8482cf29ee540e56c6639aac469600").
-	MustSetRawCheck("Mcf89b01830f423f8a4d4e5400000000000000843b9aca00b8419b3beac2c6ad88a8bd54d24912754bb820e58345731cb1b9bc0885ee74f9e50a58a80aa990a29c98b05541b266af99d3825bb1e5ed4e540c6e2f7c9b40af9ecc011ca00f7ba6d0aa47d74274b960fba02be03158d0374b978dcaa5f56fc7cf1754f821a019a829a3b7bba2fc290f5c96e469851a3876376d6a6a4df937327b3a5e9e8297")
+```ruby
+Minter::RedeemCheckTx.new(
+      check: check,
+      proof: proof,
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Set candidate online transaction
@@ -612,9 +683,14 @@ PubKey - Public key of a validator.
 
 ##### Example
 
-```go
-data, _ := transaction.NewSetCandidateOnData().
-	SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
+```ruby
+Minter::SetCandidateOnTx.new(
+      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Set candidate offline transaction
@@ -625,9 +701,14 @@ PubKey - Public key of a validator.
 
 ##### Example
 
-```go
-data, _ := transaction.NewSetCandidateOffData().
-	SetPubKey("Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43")
+```ruby
+Minter::SetCandidateOffTx.new(
+      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 #### Create multisig address
@@ -676,12 +757,16 @@ data := transaction.
 Transaction for editing existing candidate.
 
 ##### Example
-
-```go
-data := transaction.NewEditCandidateData().
-    MustSetPubKey("Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8").
-    MustSetOwnerAddress("Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0").
-    MustSetRewardAddress("Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47")
+```ruby
+Minter::EditCandidateTx.new(
+      pubkey: "Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8",
+      reward_address: "Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47",
+      owner_address: "Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0",
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
 ```
 
 ### Get fee of transaction
@@ -767,44 +852,60 @@ proof, _ := check.Proof()
 
 ### Minter Wallet
 
-```go
-import "github.com/MinterTeam/minter-go-sdk/wallet"
-```
-
 * Create wallet. This method returns generated seed, private key, public key, mnemonic and Minter address.
 
-```go
-walletData, _ := wallet.Create()
+```ruby
+wallet = Minter::Wallet.new
+# => #<Minter::Wallet:0x00007fa168c31f48
+#  @address="Mx02b065d31b57511279f5b4d6ddb4c35a5ab0ebff",
+#  @mnemonic=
+#   "you random jacket limit ship vacuum mango various penalty imitate swallow second",
+#  @private_key=
+#   "7ced83b93186ff8d4c20f6b8b6f4a610eafd64d12024105f68796120dd3e7bce",
+#  @public_key=
+#   "Mp961589ae817659c6bb323587faa9a92a91b5e8481dd3b73ad0dc680464dac5adbc2d498064598bc36e158436fb1861245ef909a1776e5cb50221db718c82a483">
 ```
 
+
+### Minter Key
 * Generate mnemonic.
 
-```go
-mnemonic, _ := wallet.NewMnemonic()
+```ruby
+mnemonic = Minter::Key.new_mnemonic
+#=> "rice joy gift diamond wisdom scout junk keen math page firm regular"
 ```
 
-* Get seed from mnemonic.
+* Get private key from mnemonic.
 
-```go
-seed, _ := wallet.Seed(mnemonic)
-```
-
-* Get private key from seed.
-
-```go
-prKey, _ := wallet.PrivateKeyBySeed(seed)
+```ruby
+private_key = Minter::Key.private_key_from_mnemonic(mnemonic)
+# => "4f9706c0fa8f63a9481379579b4e6ab2d1e41ae8adab0885f58dc6a4859451be"
 ```
 
 * Get public key from private key.
 
-```go
-pubKey, _ := wallet.PublicKeyByPrivateKey(validPrivateKey)
+```ruby
+public_key = Minter::Key.public_key_from_private_key(private_key)
+#=> "Mp4357760042c69a3414b9f66236e0cf0cc583c2bb49dff7c3cf68968df1e131bfa54483d0da3291dcba8980cf86ebe8c4d38186efe7322d5d7a3d5501149e6fb0"
 ```
 
 * Get Minter address from public key.
 
-```go
-address, _ := wallet.AddressByPublicKey(validPublicKey)
+```ruby
+address  = Minter::Key.address_from_public_key(public_key)
+#=> "Mx703323dfeabdffc976c62fb156c58ea41606831e"
+```
+
+* Get Minter address from private key.
+```ruby
+address  = Minter::Key.address_from_private_key(private_key)
+#=> "Mx703323dfeabdffc976c62fb156c58ea41606831e"
+```
+
+* Get Minter address from mnemonic.
+```ruby
+address  = Minter::Key.address_from_mnemonic(mnemonic)
+#=> "Mx703323dfeabdffc976c62fb156c58ea41606831e"
 ```
 
 ## Tests
@@ -812,8 +913,8 @@ address, _ := wallet.AddressByPublicKey(validPublicKey)
 To run tests: 
 
 ```shell script
-go test ./...
-TEST_NET_CHAIN_API_HOST_URL=https://minter-node-1.testnet.minter.network:8841/ go test ./... -tags=integration 
+bundle install
+rpsec
 ```
 
 ## Development
