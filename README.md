@@ -76,11 +76,12 @@ This is a Ruby SDK for working with **Minter** blockchain
 	- [Minter Wallet](#minter-wallet)
 	    - [Create wallet](#create-wallet)		
 	- [Minter Key](#minter-key)
-	    - [Minter Key](#minter-key)
-	    - [Minter Key](#minter-key)
-	    - [Minter Key](#minter-key)
-	    - [Minter Key](#minter-key)
-			
+	    -[Generate mnemonic](#generate-mnemonic)
+	    -[Get private key from mnemonic](get-private-key-from-mnemonic)
+	    -[Get public key from private key](#get-public-key-from-private-key)
+	    -[Get Minter address from public key](#get-minter-address-from-public-key)
+	    -[Get Minter address from private key](#get-minter-address-from-private-key)
+	    -[Get Minter address from mnemonic](#get-minter-address-from-mnemonic)
 * [Tests](#tests)
 
 
@@ -520,7 +521,6 @@ response.body
 ### Sign transaction
 
 Returns a signed tx.
-
 
 #### Single signature
 
@@ -980,41 +980,40 @@ wallet = Minter::Wallet.new
 
 
 ### Minter Key
-* Generate mnemonic.
+#### Generate mnemonic.
 
 ```ruby
 mnemonic = Minter::Key.new_mnemonic
 #=> "rice joy gift diamond wisdom scout junk keen math page firm regular"
 ```
 
-* Get private key from mnemonic.
+#### Get private key from mnemonic.
 
 ```ruby
 private_key = Minter::Key.private_key_from_mnemonic(mnemonic)
 # => "4f9706c0fa8f63a9481379579b4e6ab2d1e41ae8adab0885f58dc6a4859451be"
 ```
 
-* Get public key from private key.
+#### Get public key from private key.
 
 ```ruby
 public_key = Minter::Key.public_key_from_private_key(private_key)
 #=> "Mp4357760042c69a3414b9f66236e0cf0cc583c2bb49dff7c3cf68968df1e131bfa54483d0da3291dcba8980cf86ebe8c4d38186efe7322d5d7a3d5501149e6fb0"
 ```
 
-* Get Minter address from public key.
+#### Get Minter address from public key.
 
 ```ruby
 address  = Minter::Key.address_from_public_key(public_key)
 #=> "Mx703323dfeabdffc976c62fb156c58ea41606831e"
 ```
 
-* Get Minter address from private key.
+#### Get Minter address from private key.
 ```ruby
 address  = Minter::Key.address_from_private_key(private_key)
 #=> "Mx703323dfeabdffc976c62fb156c58ea41606831e"
 ```
-
-* Get Minter address from mnemonic.
+#### Get Minter address from mnemonic.
 ```ruby
 address  = Minter::Key.address_from_mnemonic(mnemonic)
 #=> "Mx703323dfeabdffc976c62fb156c58ea41606831e"
