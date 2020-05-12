@@ -312,8 +312,15 @@ response.body
 
 Returns missed blocks by validator public key.
 
-```go
-func (a *Api) MissedBlocksAtHeight(pubKey string, height int) (*MissedBlocksResult, error) {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+response = client.missed_block
+response.status
+#=>200
+response.body
+#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"1"}
 ```
 
 ##### Example
@@ -407,18 +414,25 @@ response, err := minterClient.UnconfirmedTxs(0)
 
 Returns list of active validators.
 
-```go
-func (a *Api) ValidatorsAtHeight(height int) (*ValidatorsResult, error) {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+response = client.validators
+response.status
+#=>200
+response.body
+#=>
+{"jsonrpc"=>"2.0",
+ "id"=>"",
+ "result"=>
+  [{"pub_key"=>"Mp0d29a83e54653a1d5f34e561e0135f1e81cbcae152f1f327ab36857a7e32de4c", "voting_power"=>"99121402"},
+   {"pub_key"=>"Mpa3c16ffc2af26f199dd23c52932ce22441f848aa3ab2b7015de01e2f9c293464", "voting_power"=>"49661"},
+   {"pub_key"=>"Mpf17328239cd81453b9e9393f66137e5442fb108c7b4fc36b6acfd838f7e6e0c4", "voting_power"=>"9911"},
+   {"pub_key"=>"Mp14c93843ca40a62b9e7d02a824e7ffe83b49e3329ae963afdd7e500071ab9bfc", "voting_power"=>"819024"}]}
+
+
 ```
-
-##### Example
-
-```go
-response, err := minterClient.ValidatorsAtHeight(0)
-
-// [&{PubKey:Mp8038275ca777c051b4baeefc09d05673f9b10d984395c1abed8e5cfae15be191 VotingPower:1296218} &{PubKey:Mp0d29a83e54653a1d5f34e561e0135f1e81cbcae152f1f327ab36857a7e32de4c VotingPower:80787843} &{PubKey:Mp14c93843ca40a62b9e7d02a824e7ffe83b49e3329ae963afdd7e500071ab9bfc VotingPower:17915937}]
-```
-
 
 ## Using Minter SDK
 

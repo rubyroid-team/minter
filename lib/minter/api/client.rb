@@ -23,6 +23,7 @@ module Minter
       include Minter::Api::NonceResource
       include Minter::Api::Status
       include Minter::Api::TransactionsResource
+      include Minter::Api::ValidatorsResource
 
       DEFAULT_TIMEOUT = 30
       API_VERSION = 2
