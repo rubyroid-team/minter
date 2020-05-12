@@ -23,7 +23,6 @@ RSpec.describe Minter::Api::ValidatorsResource do
     let(:page) { 1 }
     let(:per_page) { 1 }
 
-
     it "return transactions list" do
       client = Minter::Api::Client.new
       response = client.transactions(query: query, page: page, per_page: per_page)

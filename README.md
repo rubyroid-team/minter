@@ -651,7 +651,10 @@ Minter::SellAllCoinTx.new(
 
 Transaction for buy a coin paying another coin (owned by sender).
 
-coin_to_buy - Symbol of a coin to get. value_to_buy - Amount of CoinToBuy to get. coin_to_sell - Symbol of a coin to give. maximum_value_to_sell - Maximum value of coins to sell.
+coin_to_buy - Symbol of a coin to get.
+value_to_buy - Amount of CoinToBuy to get.
+coin_to_sell - Symbol of a coin to give.
+maximum_value_to_sell - Maximum value of coins to sell.
 
 ##### Example
 

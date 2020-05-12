@@ -3,7 +3,6 @@
 module Minter
   module Api
     module TransactionsResource
-
       def transaction_info(transaction_hash:)
         params = { hash: transaction_hash }
         path = "/transaction"
@@ -11,7 +10,7 @@ module Minter
       end
 
       def transactions(query:, page: 1, per_page: 10)
-        params = { query: query, page: page, per_page: per_page}
+        params = { query: query, page: page, per_page: per_page }
         path = "/transactions"
         get(path, params)
       end
