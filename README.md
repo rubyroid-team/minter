@@ -76,12 +76,12 @@ This is a Ruby SDK for working with **Minter** blockchain
 	- [Minter Wallet](#minter-wallet)
 	    - [Create wallet](#create-wallet)		
 	- [Minter Key](#minter-key)
-	    -[Generate mnemonic](#generate-mnemonic)
-	    -[Get private key from mnemonic](get-private-key-from-mnemonic)
-	    -[Get public key from private key](#get-public-key-from-private-key)
-	    -[Get Minter address from public key](#get-minter-address-from-public-key)
-	    -[Get Minter address from private key](#get-minter-address-from-private-key)
-	    -[Get Minter address from mnemonic](#get-minter-address-from-mnemonic)
+	    - [Generate mnemonic](#generate-mnemonic)
+	    - [Get private key from mnemonic](get-private-key-from-mnemonic)
+	    - [Get public key from private key](#get-public-key-from-private-key)
+	    - [Get Minter address from public key](#get-minter-address-from-public-key)
+	    - [Get Minter address from private key](#get-minter-address-from-private-key)
+	    - [Get Minter address from mnemonic](#get-minter-address-from-mnemonic)
 * [Tests](#tests)
 
 
