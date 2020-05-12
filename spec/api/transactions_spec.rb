@@ -1,0 +1,20 @@
+# frozen_string_literal: true
+
+require "spec_helper"
+
+RSpec.describe Minter::Api::ValidatorsResource do
+  describe "transaction_info" do
+    let(:transaction_hash) { "Mt56c1957d15bf4143f7cd180f837bce51564a054cfbdaf5c5e179f9b0aad8e8b2" }
+
+    it "return transaction info" do
+      client = Minter::Api::Client.new
+      response = client.transaction_info(transaction_hash: transaction_hash)
+      expect(response.status).to eq 200
+      expect(response.body).not_to be_nil
+      expect(response.body["result"]).not_to be_nil
+      %w[hash raw_tx height index from nonce gas gas_price gas_coin data payload].each do |key|
+        expect(response.body["result"][key]).not_to be_nil
+      end
+    end
+  end
+end

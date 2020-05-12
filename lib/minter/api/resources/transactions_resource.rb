@@ -3,6 +3,13 @@
 module Minter
   module Api
     module TransactionsResource
+
+      def transaction_info(transaction_hash:)
+        params = { hash: transaction_hash }
+        path = "/transaction"
+        get(path, params)
+      end
+
       def send_transaction(transaction:)
         params = { tx: transaction }
         path = "/send_transaction"
