@@ -3,7 +3,7 @@
 module Minter
   module Api
     module MmxGasResource
-      def fetch
+      def max_gas
         path = "/max_gas"
         get(path)
       end

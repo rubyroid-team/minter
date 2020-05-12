@@ -87,65 +87,67 @@ This is a Ruby SDK for working with **Minter** blockchain
 ### Minter API
 You can get all valid responses and full documentation at [Minter Node Api](https://docs.minter.network)
 
-Create MinterAPI instance
+Create Minter::Api client
 
-```go
-import "github.com/MinterTeam/minter-go-sdk/api"
+```ruby
+require "minter"
 
-nodeUrl := "https://minter-node-1.testnet.minter.network:8841"
-minterClient := api.NewApi(nodeUrl)
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 ```
 
 ### Address
 
 Returns coins list, balance and transaction count (for nonce) of an address.
 
-```go
-func (a *Api) AddressAtHeight(address string, height int) (*AddressResult, error) {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
+response = client.address(address: address)
+response.status
+#=> 200
+response.body
+#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>{"balance"=>{"DEVDEV"=>"1000000000000002000", "DEVTWO"=>"1000000000000000000", "MNT"=>"66565140000000800001000"}, "transaction_count"=>"31"}}
 ````
-
-##### Example
-
-```go
-response, err := minterClient.AddressAtHeight("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99", api.LatestBlockHeight)
-
-// &{Balance:map[CAPITAL:57010462073783319332082 KLM0VCOIN:16619033694080914686 MNT:41943252740815940564238] TransactionCount:81}
-```
-
-### Balance
-
-Returns balance of an address.
-
-```go
-func (a *Api) BalanceAtHeight(address string, height int) (map[string]string, error) {...}
-```
 
 ### Nonce
 
 Returns next transaction number (nonce) of an address.
 
-```go
-func (a *Api) Nonce(address string) (uint64, error) {...}
-```
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-##### Example
-
-```go
-nonce, err := minterClient.Nonce("Mxeeee1973381ab793719fff497b9a516719fcd5a2")
+address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
+nonce = client.nonce(address: address)
+#=> 28
 ```
 
 ### Block
 
 Returns block data at given height.
 
-```go
-func (a *Api) Block(height int) (*BlockResult, error) {...}
-```
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-##### Example
+response = client.block(height: 1)
+response.status
+#=> 200
+response.body
+#=> {"jsonrpc"=>"2.0",
+#  "id"=>"",
+#  "result"=>
+#   {"hash"=>"499a3ba23ec8a046eb7d1eecdf4123b795e2ba3df0e57122f75fa656144553ea",
+#    "height"=>"1",
+#    "time"=>"2020-04-08T13:00:00Z",
+#    "num_txs"=>"0",
+#    "transactions"=>[],
+#    "block_reward"=>"331000000000000000000",
+#    "size"=>"280"}}
 
-```go
-response, err := minterClient.Block(19)
 ```
 
 ### Candidate
@@ -711,6 +713,23 @@ Minter::SetCandidateOffTx.new(
     )
 ```
 
+#### Edit candidate transaction
+
+Transaction for editing existing candidate.
+
+##### Example
+```ruby
+Minter::EditCandidateTx.new(
+      pubkey: "Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8",
+      reward_address: "Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47",
+      owner_address: "Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0",
+      nonce: 1,
+      chain_id: 2,
+      gas_coin: "MNT",
+      gas_price: 1
+    )
+```
+
 #### Create multisig address
 
 Transaction for creating multisignature address.
@@ -749,23 +768,6 @@ data := transaction.
             SetCoin(symbolMNT).
             SetValue(big.NewInt(0).Mul(big.NewInt(2), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
             MustSetTo("Mxddab6281766ad86497741ff91b6b48fe85012e3c"),
-    )
-```
-
-#### Edit candidate transaction
-
-Transaction for editing existing candidate.
-
-##### Example
-```ruby
-Minter::EditCandidateTx.new(
-      pubkey: "Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8",
-      reward_address: "Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47",
-      owner_address: "Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0",
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
     )
 ```
 

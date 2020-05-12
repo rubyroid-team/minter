@@ -10,7 +10,7 @@ module Minter
         get(path, params)
       end
 
-      def addresses(_params)
+      def addresses(_params = {})
         path = "/address"
         get(path)
       end

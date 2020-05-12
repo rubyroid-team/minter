@@ -3,7 +3,7 @@
 module Minter
   module Api
     module EventsResource
-      def coin_buy(height: nil)
+      def events(height: nil)
         height ||= LatestBlockHeight
         params = { height: height }
         path = "/events"

@@ -11,12 +11,13 @@ module Minter
       attr_accessor :node_url, :authenticated_api_url, :api_version
       attr_accessor :proxy, :connect_timeout, :read_timeout, :write_timeout
 
-      include Minter::Api::Connection
       include Minter::Api::AddressResource
       include Minter::Api::BlockResource
       include Minter::Api::CandidateResource
       include Minter::Api::CoinResource
+      include Minter::Api::Connection
       include Minter::Api::MissedBlocksResource
+      include Minter::Api::NonceResource
       include Minter::Api::Status
       include Minter::Api::TransactionsResource
 
