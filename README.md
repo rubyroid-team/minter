@@ -43,7 +43,7 @@ This is a Ruby SDK for working with **Minter** blockchain
 	    - [MaxGas](#max-gas)
 	    - [MinGasPrice](#min-gas-price)
 	    - [MissedBlocks](#missed-blocks)
-	    - [Send](#send-transaction)
+	    - [Send](#send)
 	    - [Status](#status)
 	    - [Validators](#validators)
 	    - [Transaction](#transaction)
@@ -332,7 +332,7 @@ response, err := minterClient.MissedBlocksAtHeight("Mp1ada5ac409b965623bf6a43202
 // &{MissedBlocks:________________________ MissedBlocksCount:0}
 ```
 
-### SendTransaction
+### Send 
 
 Returns the result of sending __signed__ tx.
 
