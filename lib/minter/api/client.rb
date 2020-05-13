@@ -21,6 +21,7 @@ module Minter
       include Minter::Api::MaxGasResource
       include Minter::Api::MissedBlocksResource
       include Minter::Api::NonceResource
+      include Minter::Api::SendTransactionResource
       include Minter::Api::StatusResource
       include Minter::Api::TransactionsResource
       include Minter::Api::ValidatorsResource

@@ -40,10 +40,10 @@ This is a Ruby SDK for working with **Minter** blockchain
 	    - [EstimateCoinSell](#estimatecoinsell)
 	    - [EstimateTxCommission](#estimatetxcommission)
 	    - [Events](#events)
-	    - [MaxGas](#maxgas)
-	    - [MinGasPrice](#mingasprice)
-	    - [MissedBlocks](#missedblocks)
-	    - [Send](#sendtransaction)
+	    - [MaxGas](#max-gas)
+	    - [MinGasPrice](#min-gas-price)
+	    - [MissedBlocks](#missed-blocks)
+	    - [Send](#send-transaction)
 	    - [Status](#status)
 	    - [Validators](#validators)
 	    - [Transaction](#transaction)
@@ -336,17 +336,16 @@ response, err := minterClient.MissedBlocksAtHeight("Mp1ada5ac409b965623bf6a43202
 
 Returns the result of sending __signed__ tx.
 
-```go
-func (a *Api) SendTransaction(transaction transaction.SignedTransaction) (*SendResult, error) {...}
-```
-
-##### Example
-
-```go
-signedTransaction, _ := transaction.Sign(privateKey)
-res, _ := minterClient.SendTransaction(signedTransaction)
-
-// &{Code:0 Data: Log: Hash:73740C0555B73AE245C9E21C3D146FED4C15B83923C70C792CA346C3D1892DEC}
+```ruby
+signed_transaction = transaction.sign(privateKey)
+response = signed_transaction.send
+# or 
+response = client.send_transaction(transaction: signed_transaction.tx_hash)
+response.status 
+#=> 200
+response.body
+#=>
+{"jsonrpc"=>"2.0", "id"=>"", "result"=>{"code"=>0, "data"=>"", "log"=>"", "hash"=>"9219C1FA06D72C2A4ACDFB4D20F52E3F536C6134E20F485F1E2EA6D71C0DFA20"}} 
 ```
 
 ### Status
