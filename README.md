@@ -112,6 +112,24 @@ response.body
 #=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>{"balance"=>{"DEVDEV"=>"1000000000000002000", "DEVTWO"=>"1000000000000000000", "MNT"=>"66565140000000800001000"}, "transaction_count"=>"31"}}
 ````
 
+### Balance
+
+Returns coins list, balance and transaction count (for nonce) of an address.
+
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
+response = client.balance(address: address)
+response.status
+#=> 200
+response.body
+#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>{"balance"=>{"DEVDEV"=>"1000000000000002000", "DEVTWO"=>"1000000000000000000", "MNT"=>"66565140000000800001000"}, "transaction_count"=>"31"}}
+````
+
+
+
 ### Nonce
 
 Returns next transaction number (nonce) of an address.

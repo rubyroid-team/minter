@@ -10,6 +10,8 @@ module Minter
         get(path, params)
       end
 
+      alias balance address
+
       def addresses(_params = {})
         path = "/address"
         get(path)
