@@ -40,9 +40,9 @@ This is a Ruby SDK for working with **Minter** blockchain
 	    - [EstimateCoinSell](#estimatecoinsell)
 	    - [EstimateTxCommission](#estimatetxcommission)
 	    - [Events](#events)
-	    - [MaxGas](#max-gas)
-	    - [MinGasPrice](#min-gas-price)
-	    - [MissedBlocks](#missed-blocks)
+	    - [MaxGas](#maxgas)
+	    - [MinGasPrice](#mingasprice)
+	    - [MissedBlocks](#missedblocks)
 	    - [Send](#send)
 	    - [Status](#status)
 	    - [Validators](#validators)
@@ -313,11 +313,7 @@ Returns missed blocks by validator public key.
 client = Minter::Api::Client.new
 client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
-response = client.missed_block
-response.status
-#=>200
-response.body
-#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"1"}
+response = client.missed_block(public_key: public_key)
 ```
 
 ### Send 
