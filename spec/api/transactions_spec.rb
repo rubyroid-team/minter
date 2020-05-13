@@ -31,4 +31,18 @@ RSpec.describe Minter::Api::ValidatorsResource do
       expect(response.body["result"]).to be_a(Array)
     end
   end
+
+  describe "unconfirmed_transactions" do
+    it "return unconfirmed transactions list" do
+      client = Minter::Api::Client.new
+      response = client.unconfirmed_transactions
+      expect(response.status).to eq 200
+      expect(response.body).not_to be_nil
+      expect(response.body["result"]).to be_a(Hash)
+      %w[n_txs total total_bytes txs].each do |key|
+        expect(response.body["result"][key]).not_to be_nil
+      end
+      expect(response.body["result"]["txs"]).to be_a(Array)
+    end
+  end
 end

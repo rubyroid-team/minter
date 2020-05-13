@@ -15,9 +15,9 @@ module Minter
         get(path, params)
       end
 
-      def unconfirmed_transactions(limit)
+      def unconfirmed_transactions(limit: 1)
         params = { limit: limit }
-        path = "/send_transaction"
+        path = "/unconfirmed_txs"
         get(path, params)
       end
     end

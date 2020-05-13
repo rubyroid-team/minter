@@ -49,7 +49,7 @@ This is a Ruby SDK for working with **Minter** blockchain
 	    - [Validators](#validators)
 	    - [Transaction](#transaction)
 	    - [Transactions](#transactions)
-	    - [UnconfirmedTxs](#unconfirmedtxs)
+	    - [Unconfirmed Transactions](#unconfirmed-transactions)
 * [Minter SDK](#using-mintersdk)
     - [Create Transations](#create-transations)
     	- [Send](#send-transaction)
@@ -481,14 +481,24 @@ response.body
 
 ```
 
-### UnconfirmedTxs
+### Unconfirmed Transactions
 
 Returns unconfirmed transactions.
 
-```go
-response, err := minterClient.UnconfirmedTxs(0)
 
-// &{NTxs:1 Total:1 TotalBytes:134 Txs:[+IRSAgGKTU5UAAAAAAAAAAGq6YpNTlQAAAAAAAAAlO6BNHIRxyUkM4+WgAcq+QdEMzFGiA3gtrOnZAAAgIABuEX4QxygcpfIQQO4plZ0pIDhCMHCcwps9nj1RSJi8/F820iftpmgTiaGYBtc91eaDFgbp3HzZ6Qve3TX//bisJnIaCr8wwE=]}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+query = "tags.tx.coin='MNT'" 
+page = 1
+per_page = 1
+response = client.unconfirmed_transactions
+response.status
+#=> 200
+response.body
+#=>
+{"jsonrpc"=>"2.0", "id"=>"", "result"=>{"n_txs"=>"0", "total"=>"0", "total_bytes"=>"0", "txs"=>[]}}
 ```
 
 ### Validators
