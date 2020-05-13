@@ -4,7 +4,7 @@ module Minter
   module Api
     module EventsResource
       def events(height: nil)
-        height ||= LatestBlockHeight
+        height ||= 1
         params = { height: height }
         path = "/events"
         get(path, params)

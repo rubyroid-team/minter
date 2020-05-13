@@ -305,8 +305,11 @@ response = client.estimate_tx_comission(transaction: "0xf88522020a8a4d4e54000000
 
 Returns events at given height.
 
-```go
-func (a *Api) EventsAtHeight(height int) (*EventsResult, error) {...}
+```ruby
+client = Minter::Api::Client.new
+client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+
+response = client.events(height: 1)
 ```
 
 
