@@ -4,7 +4,7 @@ require "ffi"
 module Minter
   module TransactionFfi
     extend FFI::Library
-    ffi_lib "./lib/ffi/so/transaction.so"
+    ffi_lib File.join(File.dirname(__FILE__), "/transaction.so")
     attach_function :SignTransaction, [:string], :string
     attach_function :TransactionHash, [:string], :string
     attach_function :DecodeTransaction, [:string], :string
@@ -19,9 +19,11 @@ module Minter
     attach_function :SignSetCandidateOnTransaction, [:string], :string
     attach_function :SignRedeemCheckTransaction, [:string], :string
     attach_function :SignEditCandidateTransaction, [:string], :string
+    # attach_function :SignMultisendTransaction, [:string], :string
   end
 end
 
+# Examples of USAGE FFI
 # ===SEND MNT===
 # tx_params = {
 #     Nonce: 27,

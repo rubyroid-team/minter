@@ -4,7 +4,7 @@ require "ffi"
 module Minter
   module WalletFfi
     extend FFI::Library
-    ffi_lib "./lib/ffi/so/wallet.so"
+    ffi_lib File.join(File.dirname(__FILE__), "/wallet.so")
     attach_function :NewMnemonic, [], :string
     attach_function :PrivateKeyFromMnemonic, [:string], :string
     attach_function :PublicKeyFromPrivateKey, [:string], :string

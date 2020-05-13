@@ -392,4 +392,37 @@ func SignEditCandidateTransaction(paramsJson *C.char) *C.char {
 	return C.CString(encode)
 }
 
+type SendData struct {
+	AddressTo string
+	Symbol string
+	Value  *big.Int
+}
+
+type MultiSendParams struct {
+	SendDataArray []SendData
+	ChainId    byte
+	PrivateKey string
+	Nonce      uint64
+	GasPrice   uint8
+	GasCoin    string
+}
+
+//export SignMultiSendTransaction
+func SignMultiSendTransaction(paramsJson *C.char) *C.char {
+	var params MultiSendParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	json.Unmarshal(jsonBytes, &params)
+
+	data := transaction.NewMultisendData()
+
+
+
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
+	encode, _ := signedTransaction.Encode()
+	return C.CString(encode)
+}
+
 func main() {}

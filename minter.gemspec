@@ -15,7 +15,14 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/nikolaev-dev/minter-ruby-sdk"
   spec.metadata["changelog_uri"] = "https://github.com/MinterTeam/nikolaev-dev/blob/master/CHANGELOG.md"
 
-  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md"]
+  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md", "{lib}/ffi/so/*.so"]
 
   spec.require_paths = ["lib"]
+
+  spec.add_dependency "dotenv"
+  spec.add_dependency "ffi"
+  spec.add_dependency "http"
+  spec.add_dependency "json"
+  spec.add_dependency "rake"
+  spec.add_dependency "rspec"
 end
