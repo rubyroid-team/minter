@@ -263,9 +263,6 @@ client = Minter::Api::Client.new
 client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
 response = client.estimate_tx_comission(transaction: "0xf88522020a8a4d4e540000000000000001abea8a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d49789014d1120d7b1600000808001b845f8431ba07424d88d612132c847c1c92c1f471471fa8034914260223cb547f097e2bd7587a0201fa4d869ba564538996a71e6aa1e2b069d746b8fa0a563e023989986ae91a7")
-response.status
-#=>200
-
 ```
 
 ### Events
@@ -321,14 +318,6 @@ response.status
 #=>200
 response.body
 #=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"1"}
-```
-
-##### Example
-
-```go
-response, err := minterClient.MissedBlocksAtHeight("Mp1ada5ac409b965623bf6a4320260190038ae27230abfb5ebc9158280cdffffff", api.LatestBlockHeight)
-
-// &{MissedBlocks:________________________ MissedBlocksCount:0}
 ```
 
 ### Send 
@@ -388,14 +377,6 @@ response.body
        "validator_info"=>
         {"address"=>"43253BE55C58BCA3045BEFABEF873944B56E3555", "pub_key"=>{"type"=>"tendermint/PubKeyEd25519", "value"=>"DSmoPlRlOh1fNOVh4BNfHoHLyuFS8fMnqzaFen4y3kw="}, "voting_power"=>"98784385"}}}}
 
-```
-
-##### Example
-
-```go
-response, err := minterClient.Status()
-
-// &{Version:1.0.3 LatestBlockHash:71F48E7096820DF4427EE7FBC93BBEE86167D5C76E6E4F21F73B719EBA82D7BD LatestAppHash:6B0CF291278BACE9817DAB3E808A5679B8BEBCCCD322FA8D3F2A304997352B64 LatestBlockHeight:1740266 LatestBlockTime:2019-10-02 11:36:52.504141439 +0000 UTC StateHistory:on TmStatus:{NodeInfo:{ProtocolVersion:{P2P:7 Block:10 App:5} ID:4735e67924e611b89fbd3f951441b5e912e226d3 ListenAddr:tcp://0.0.0.0:26656 Network:minter-test-network-41 Version:0.31.7 Channels:4020212223303800 Moniker:minter-node-1.testnet.minter.network Other:{TxIndex:on RPCAddress:tcp://0.0.0.0:26667}} SyncInfo:{LatestBlockHash:71F48E7096820DF4427EE7FBC93BBEE86167D5C76E6E4F21F73B719EBA82D7BD LatestAppHash:6B0CF291278BACE9817DAB3E808A5679B8BEBCCCD322FA8D3F2A304997352B64 LatestBlockHeight:1740266 LatestBlockTime:2019-10-02 11:36:52.504141439 +0000 UTC CatchingUp:false} ValidatorInfo:{Address:43253BE55C58BCA3045BEFABEF873944B56E3555 PubKey:{Type:tendermint/PubKeyEd25519 Value:DSmoPlRlOh1fNOVh4BNfHoHLyuFS8fMnqzaFen4y3kw=} VotingPower:80787843}}}
 ```
 
 ### Transaction
@@ -468,21 +449,9 @@ response.body
 
 ```
 
-##### Example
-
-```go
-response, err := minterClient.Transactions("tags.tx.coin='ZERO'", 0, 0)
-```
-
 ### UnconfirmedTxs
 
 Returns unconfirmed transactions.
-
-```go
-func (a *Api) UnconfirmedTxs(limit int) (*UnconfirmedTxsResult, error) {...}
-```
-
-##### Example
 
 ```go
 response, err := minterClient.UnconfirmedTxs(0)
