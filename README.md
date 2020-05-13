@@ -49,7 +49,6 @@ This is a Ruby SDK for working with **Minter** blockchain
 	    - [Transaction](#transaction)
 	    - [Transactions](#transactions)
 	    - [UnconfirmedTxs](#unconfirmedtxs)
-	    - [Validators](#validators)
 * [Minter SDK](#using-mintersdk)
     - [Create Transations](#create-transations)
     	- [Send](#send-transaction)
