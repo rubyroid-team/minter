@@ -6,8 +6,6 @@ module Minter
     extend FFI::Library
     filename = RUBY_PLATFORM.match('darwin') ? "/transaction-darwin-10.6-amd64.dylib" : "/transaction-linux-amd64.so"
     ffi_lib File.join(File.dirname(__FILE__), filename)
-
-    ffi_lib File.join(File.dirname(__FILE__), "/transaction-darwin-10.6-amd64.dylib")
     attach_function :SignTransaction, [:string], :string
     attach_function :TransactionHash, [:string], :string
     attach_function :DecodeTransaction, [:string], :string
