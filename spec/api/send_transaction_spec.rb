@@ -16,7 +16,6 @@ RSpec.describe Minter::Api::SendTransactionResource do
       receiver_address = "Mxeeee1973381ab793719fff497b9a516719fcd5a2"
 
       transaction = Minter::SendCoinTx.new(
-        type: 1,
         address_to: receiver_address,
         value: 1_000_000_000_000_000_000,
         coin: "MNT",

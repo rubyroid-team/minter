@@ -4,8 +4,7 @@ module Minter
   class SendCoinTx
     attr_accessor :type, :address_to, :value, :coin, :nonce, :chain_id, :gas_coin, :gas_price
 
-    def initialize(type:, address_to:, value:, coin:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists
-      @type = type
+    def initialize(address_to:, value:, coin:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists
       @address_to = address_to
       @value = value
       @coin =  coin
@@ -23,8 +22,7 @@ module Minter
     end
 
     def to_params
-      { Type: type,
-        AddressTo: address_to,
+      { AddressTo: address_to,
         Value: value,
         Coin: coin,
         Nonce: nonce,

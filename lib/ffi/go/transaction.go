@@ -10,7 +10,6 @@ import (
 type TransactionParams struct {
 	Nonce      uint64
 	ChainId    byte
-	Type       uint8
 	AddressTo  string
 	Value      *big.Int
 	Coin       string

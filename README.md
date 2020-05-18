@@ -48,7 +48,7 @@ Or install it yourself as:
 	    - [Transactions](#transactions)
 	    - [Unconfirmed Transactions](#unconfirmed-transactions)
 * [Minter SDK](#using-mintersdk)
-    - [Create Transations](#create-transations)
+    - [Create Transation](#create-transation)
     	- [Send](#send-transaction)
         - [SellCoin](#sell-coin-transaction)
         - [SellAllCoin](#sell-all-coin-transaction)
@@ -531,16 +531,30 @@ response.body
 
 Returns a signed tx.
 
+#### Single signature
+
 ```ruby
+transaction = Minter::SendCoinTx.new(
+  address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
+  value: 24_000_000_000_000_000_000,
+  coin: "MNT",
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: "MNT",
+  gas_price: 10
+)
 
-
-var data transaction.DataInterface
-// data = ...
-tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
-tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeSingle)
-signedTx, _ := tx.Sign(privateKey)
-minterClient.SendTransaction(signedTx)
+signed_tx = sign(private_key)
+signed_tx.tx_hash
+#=> "0xf88501020a8a4d4e540000000000000001abea8a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d49789014d1120d7b1600000808001b845f8431ba07fde3c0e8d9ffb5fd7025099c9f3672deffab0b784787f5d45ea8f27b0ffe989a02f7cd63ac0d75e559f540d8b33464b11da4605e623d62a5b2ddce5adf70c35cb" 
 ```
+
+#### Multi signatures
+```ruby
+# IN PROGRESS
+```
+
+### Create transaction
 
 #### Send transaction
 
@@ -554,7 +568,6 @@ value - Amount of Coin to send.
 
 ```ruby
 Minter::SendCoinTx.new(
-      type: 1,
       address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
       value: 24_000_000_000_000_000_000,
       coin: "MNT",

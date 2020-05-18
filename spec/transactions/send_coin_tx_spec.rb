@@ -5,7 +5,6 @@ require "spec_helper"
 RSpec.describe Minter::SendCoinTx do
   subject do
     described_class.new(
-      type: 1,
       address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
       value: 24_000_000_000_000_000_000,
       coin: "MNT",
