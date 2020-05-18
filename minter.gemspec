@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/rubyroid-team/minter"
   spec.metadata["changelog_uri"] = "https://github.com/rubyroid-team/minter/blob/master/CHANGELOG.md"
 
-  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md", "{lib}/ffi/so/*.so"]
+  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md", "{lib}/ffi/**.*"]
 
   spec.require_paths = ["lib"]
 
