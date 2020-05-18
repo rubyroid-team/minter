@@ -895,6 +895,16 @@ wallet = Minter::Wallet.new
 #   "Mp961589ae817659c6bb323587faa9a92a91b5e8481dd3b73ad0dc680464dac5adbc2d498064598bc36e158436fb1861245ef909a1776e5cb50221db718c82a483">
 ```
 
+#### Build wallet from mnemonic
+```ruby
+mnemonic = "hurt orient quarter item can into zebra west either ship team pattern"
+wallet = Minter::Wallet.new(mnemonic) 
+=> #<Minter::Wallet:0x00007fb7019cdaf0
+@address="Mx3f865a277ef9e901280d0e607294be9a654860ea",
+@mnemonic="hurt orient quarter item can into zebra west either ship team pattern",
+@private_key="0ce363580a20351d995dbafc8942f61c0094f38d0d4f837d1f0c37a9f3c3c7ca",
+@public_key="Mp7084eec27577ffd4151b54bf7d8ed500a514629fea4e5992bb94a704011d89225be0543fd0a27069b7855c0d260aa21011380843d03d18aabc2bb1e4d4c80e15">
+```
 
 ### Minter Key
 #### Generate mnemonic.

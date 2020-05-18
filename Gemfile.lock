@@ -1,13 +1,12 @@
 PATH
   remote: .
   specs:
-    minter (0.0.3)
-      dotenv
-      ffi
-      http
-      json
-      rake
-      rspec
+    minter (0.1.1)
+      dotenv (~> 2.7, >= 2.7.5)
+      ffi (~> 1.12, >= 1.12.2)
+      http (~> 4.4, >= 4.4.1)
+      json (~> 2.3, >= 2.3.0)
+      rake (~> 12.3, >= 12.3.3)
 
 GEM
   remote: https://rubygems.org/
