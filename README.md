@@ -808,28 +808,33 @@ Minter::EditCandidateTx.new(
 
 Transaction for creating multisignature address.
 
-IN PROGRESS
-
+```ruby
+# IN PROGRESS
+```
 #### Multisend transaction
 
 Transaction for sending coins to multiple addresses.
 
 ##### Example
 
-IN PROGRESS
-
+```ruby
+# IN PROGRESS
+```
 ### Get fee of transaction
-IN PROGRESS
-
+```ruby
+# IN PROGRESS
+```
 
 ### Decode Transaction
 
-IN PROGRESS
-
+```ruby
+# IN PROGRESS
+```
 ### Minter Deep Links
 
-IN PROGRESS
-
+```ruby
+# IN PROGRESS
+```
 More info about [Minter Link Protocol](https://github.com/MinterTeam/minter-link-protocol)
 
 ### Minter Check
