@@ -48,7 +48,7 @@ Or install it yourself as:
 	    - [Transactions](#transactions)
 	    - [Unconfirmed Transactions](#unconfirmed-transactions)
 * [Minter SDK](#using-mintersdk)
-    - [Create Transation](#create-transation)
+    - [Create Transaction](#create-transaction)
     	- [Send](#send-transaction)
         - [SellCoin](#sell-coin-transaction)
         - [SellAllCoin](#sell-all-coin-transaction)
