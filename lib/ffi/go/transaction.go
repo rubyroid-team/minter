@@ -24,20 +24,12 @@ func SignTransaction(paramsJson *C.char) *C.char {
 	jsonBytes := []byte(C.GoString(paramsJson))
 	json.Unmarshal(jsonBytes, &params)
 
-	signedTransaction := createSignedTransaction(params)
+	data, _ := transaction.NewSendData().SetCoin(params.Coin).SetValue(params.Value).SetTo(params.AddressTo)
+	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	signedTransaction, _ := tx.Sign(params.PrivateKey)
 	encode, _ := signedTransaction.Encode()
 	return C.CString(encode)
-}
-
-//export TransactionHash
-func TransactionHash(paramsJson *C.char) *C.char {
-	var params TransactionParams
-	jsonBytes := []byte(C.GoString(paramsJson))
-	json.Unmarshal(jsonBytes, &params)
-
-	signedTransaction := createSignedTransaction(params)
-	hash, _ := signedTransaction.Hash()
-	return C.CString(hash)
 }
 
 //export DecodeTransaction
@@ -45,14 +37,6 @@ func DecodeTransaction(txHash *C.char) *C.char {
 	signedTransaction, _ := transaction.Decode(C.GoString(txHash))
 	result, _ := json.Marshal(signedTransaction)
 	return C.CString(string(result))
-}
-
-func createSignedTransaction(params TransactionParams) transaction.SignedTransaction {
-	data, _ := transaction.NewSendData().SetCoin(params.Coin).SetValue(params.Value).SetTo(params.AddressTo)
-	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
-	signedTransaction, _ := tx.Sign(params.PrivateKey)
-	return signedTransaction
 }
 
 type CreateCoinParams struct {
@@ -393,17 +377,17 @@ func SignEditCandidateTransaction(paramsJson *C.char) *C.char {
 
 type SendData struct {
 	AddressTo string
-	Symbol string
-	Value  *big.Int
+	Symbol    string
+	Value     *big.Int
 }
 
 type MultiSendParams struct {
 	SendDataArray []SendData
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId       byte
+	PrivateKey    string
+	Nonce         uint64
+	GasPrice      uint8
+	GasCoin       string
 }
 
 //export SignMultiSendTransaction
@@ -413,8 +397,6 @@ func SignMultiSendTransaction(paramsJson *C.char) *C.char {
 	json.Unmarshal(jsonBytes, &params)
 
 	data := transaction.NewMultisendData()
-
-
 
 	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)

@@ -71,8 +71,6 @@ extern "C" {
 
 extern char* SignTransaction(char* p0);
 
-extern char* TransactionHash(char* p0);
-
 extern char* DecodeTransaction(char* p0);
 
 extern char* SignCreateCoinTransaction(char* p0);
