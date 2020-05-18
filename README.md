@@ -2,16 +2,16 @@
 
 # Minter
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/minter/ruby/sdk`. To experiment with that code, run `bin/console` for an interactive prompt.
+This is a Ruby SDK based on Golang SDK for working with Minter blockchain
 
-TODO: Delete this and the text above, and describe your gem
+
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'minter-ruby-sdk'
+gem 'minter'
 ```
 
 And then execute:
@@ -20,10 +20,7 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install minter-ruby-sdk
-
-## About
-This is a Ruby SDK for working with **Minter** blockchain
+    $ gem install minter
 
 ## Using Minter API 
 
@@ -534,60 +531,15 @@ response.body
 
 Returns a signed tx.
 
-#### Single signature
+```ruby
 
-##### Example
 
-```go
 var data transaction.DataInterface
 // data = ...
 tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
 tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetSignatureType(transaction.SignatureTypeSingle)
 signedTx, _ := tx.Sign(privateKey)
 minterClient.SendTransaction(signedTx)
-```
-
-#### Multi signatures
-
-##### Example
-
-```go
-var data transaction.DataInterface
-var dataMultisig *transaction.CreateMultisigData
-// data = ...
-tx, _ := transaction.NewBuilder(TestNetChainID).NewTransaction(data)
-tx.SetNonce(nonce).SetGasPrice(gasPrice).SetGasCoin(symbolMNT).SetMultiSignatureType(transaction.SignatureTypeMulti)
-dataMultisig = transaction.NewCreateMultisigData().
-		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
-		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
-		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
-		SetThreshold(7)
-msigAddress := dataMultisig.AddressString()
-signedTx, _ := tx.Sign(msigAddress, privateKey1, privateKey2, privateKey3)
-minterClient.SendTransaction(signedTx)
-```
-You can transfer the transaction to the remaining addresses
-```go
-signedTx1, _ := tx.Sign(msigAddress, privateKey1)
-encode, _ := signedTx.Encode()
-// transfer encode transaction
-signedTx1, _ = transaction.Decode(encode)
-// and continue its signature by the remaining participants
-signedTx12, _ := decode.Sign(msigAddress, privateKey2)
-signedTx123, _ := decode.Sign(msigAddress, privateKey3)
-minterClient.SendTransaction(signedTx123)
-```
-You can collect all signatures in one place without revealing the private key
-```go
-signedTx1, _ := tx.Sign(msigAddress, privateKey1)
-signedTx2, _ := tx.Sign(msigAddress, privateKey2)
-signedTx3, _ := tx.Sign(msigAddress, privateKey3)
-simpleSignatureData1, _ := signedTx1.SimpleSignatureData()
-simpleSignatureData2, _ := signedTx2.SimpleSignatureData()
-simpleSignatureData3, _ := signedTx3.SimpleSignatureData()
-signedTransaction, _ := tx0.Sign("Mxdb4f4b6942cb927e8d7e3a1f602d0f1fb43b5bd2")
-signedTx123, _ := signedTransaction.AddSignature(simpleSignatureData1, simpleSignatureData2, simpleSignatureData3)
-minterClient.SendTransaction(signedTx123)
 ```
 
 #### Send transaction
@@ -856,86 +808,27 @@ Minter::EditCandidateTx.new(
 
 Transaction for creating multisignature address.
 
-```go
-data := transaction.NewCreateMultisigData().
-		MustAddSigData("Mxee81347211c72524338f9680072af90744333143", 1).
-		MustAddSigData("Mxee81347211c72524338f9680072af90744333145", 3).
-		MustAddSigData("Mxee81347211c72524338f9680072af90744333144", 5).
-		SetThreshold(7)
-```
+IN PROGRESS
 
-Get the multisig address to use it for transaction signatures
-
-```go
-msigAddress := dataMultisig.AddressString()
-signedTx, _ := tx.Sign(msigAddress, privateKey1, privateKey2, privateKey3)
-```
 #### Multisend transaction
 
 Transaction for sending coins to multiple addresses.
 
 ##### Example
 
-```go
-symbolMNT := "MNT"
-data := transaction.
-    NewMultisendData().
-    AddItem(
-        *transaction.NewMultisendDataItem().
-            SetCoin(symbolMNT).
-            SetValue(big.NewInt(0).Mul(big.NewInt(1), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-            MustSetTo("Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99"),
-    ).AddItem(
-        *transaction.NewMultisendDataItem().
-            SetCoin(symbolMNT).
-            SetValue(big.NewInt(0).Mul(big.NewInt(2), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil))).
-            MustSetTo("Mxddab6281766ad86497741ff91b6b48fe85012e3c"),
-    )
-```
+IN PROGRESS
 
 ### Get fee of transaction
+IN PROGRESS
 
-```go
-signedTransaction, _ := transaction.Sign(privateKey)
-fee := signedTransaction.Fee()
-```
-
-### Get hash of transaction
-
-```go
-hash, _ := signedTransaction.Hash()
-```
-
-### Get Public Key of transaction
-
-```go
-key, _ := signedTransaction.PublicKey()
-```
-
-### Get sender address of transaction
-
-```go
-address, _ := signedTransaction.SenderAddress()
-```
 
 ### Decode Transaction
 
-```go
-transactionObject, _ := transaction.Decode("0xf8840102018a4d4e540000000000000001aae98a4d4e5400000000000000941b685a7c1e78726c48f619c497a07ed75fe00483880de0b6b3a7640000808001b845f8431ca01f36e51600baa1d89d2bee64def9ac5d88c518cdefe45e3de66a3cf9fe410de4a01bc2228dc419a97ded0efe6848de906fbe6c659092167ef0e7dcb8d15024123a")
-```
+IN PROGRESS
 
 ### Minter Deep Links
 
-```go
-link, _ := NewDeepLink(
-		NewSendData().
-			MustSetTo("Mx18467bbb64a8edf890201d526c35957d82be3d95").
-			SetCoin("BIP").
-			SetValue(big.NewInt(0).Mul(big.NewInt(12345), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(14), nil))),
-	)
-link.SetPayload([]byte("Hello World"))
-encode, _ := link.Encode()
-```
+IN PROGRESS
 
 More info about [Minter Link Protocol](https://github.com/MinterTeam/minter-link-protocol)
 
@@ -945,33 +838,26 @@ Minter Check is like an ordinary bank check. Each user of network can issue chec
 
 * Create Issue Check. Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins. Due Block - defines last block height in which the check can be used.
 
-```go
-check := transaction.NewIssueCheck(
-    480,
-    TestNetChainID,
-    999999,
-    "MNT",
-    big.NewInt(0).Mul(big.NewInt(10), big.NewInt(0).Exp(big.NewInt(10), big.NewInt(18), nil)),
-).SetPassphrase("pass")
+```ruby
+# IN PROGRESS
 ```
 
 * Sign Issue Check
 
-```go
-sign, _ := check.Sign("2919c43d5c712cae66f869a524d9523999998d51157dc40ac4d8d80a7602ce02")
+```ruby
+# IN PROGRESS
 ```
 
 * Prepare check string and convert to data
 
-```go
-data, _ := transaction.DecodeIssueCheck("Mcf8a38334383002830f423f8a4d4e5400000000000000888ac7230489e80000b841d184caa333fe636288fc68d99dea2c8af5f7db4569a0bb91e03214e7e238f89d2b21f4d2b730ef590fd8de72bd43eb5c6265664df5aa3610ef6c71538d9295ee001ba08bd966fc5a093024a243e62cdc8131969152d21ee9220bc0d95044f54e3dd485a033bc4e03da3ea8a2cd2bd149d16c022ee604298575380db8548b4fd6672a9195")
+```ruby
+# IN PROGRESS
 ``` 
 
 * Proof check
 
-```go
-check, _ := transaction.NewCheckAddress("Mxa7bc33954f1ce855ed1a8c768fdd32ed927def47", "pass")
-proof, _ := check.Proof()
+```ruby
+# IN PROGRESS
 ```
 
 ### Minter Wallet
