@@ -15,13 +15,13 @@ func NewMnemonic() *C.char {
 func PrivateKeyFromMnemonic(mnemonic *C.char) *C.char {
 	seed, _ := wallet.Seed(C.GoString(mnemonic))
 	prKey, _ := wallet.PrivateKeyBySeed(seed)
-	return C.CString(string(prKey))
+	return C.CString(prKey)
 }
 
 //export PublicKeyFromPrivateKey
 func PublicKeyFromPrivateKey(prKey *C.char) *C.char {
 	pubKey, _ := wallet.PublicKeyByPrivateKey(C.GoString(prKey))
-	return C.CString(string(pubKey))
+	return C.CString(pubKey)
 }
 
 //export AddressFromMnemonic

@@ -22,21 +22,39 @@ type TransactionParams struct {
 func SignTransaction(paramsJson *C.char) *C.char {
 	var params TransactionParams
 	jsonBytes := []byte(C.GoString(paramsJson))
-	json.Unmarshal(jsonBytes, &params)
+	err := json.Unmarshal(jsonBytes, &params)
+	if err != nil {
+		json, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(json))
+	}
 
-	data, _ := transaction.NewSendData().SetCoin(params.Coin).SetValue(params.Value).SetTo(params.AddressTo)
-	tx, _ := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	data, err := transaction.NewSendData().SetCoin(params.Coin).SetValue(params.Value).SetTo(params.AddressTo)
+	if err != nil {
+		json, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(json))
+	}
+
+	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	if err != nil {
+		json, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(json))
+	}
+
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
-	signedTransaction, _ := tx.Sign(params.PrivateKey)
-	encode, _ := signedTransaction.Encode()
-	return C.CString(encode)
-}
+	signedTransaction, err := tx.Sign(params.PrivateKey)
+	if err != nil {
+		json, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(json))
+	}
 
-//export DecodeTransaction
-func DecodeTransaction(txHash *C.char) *C.char {
-	signedTransaction, _ := transaction.Decode(C.GoString(txHash))
-	result, _ := json.Marshal(signedTransaction)
-	return C.CString(string(result))
+	encode, err := signedTransaction.Encode()
+	if err != nil {
+		json, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(json))
+	}
+
+	json, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	return C.CString(string(json))
 }
 
 type CreateCoinParams struct {
@@ -411,6 +429,14 @@ func SignMultiSendTransaction(paramsJson *C.char) *C.char {
 	signedTransaction, _ := tx.Sign(params.PrivateKey)
 	encode, _ := signedTransaction.Encode()
 	return C.CString(encode)
+}
+
+
+//export DecodeTransaction
+func DecodeTransaction(txHash *C.char) *C.char {
+	signedTransaction, _ := transaction.Decode(C.GoString(txHash))
+	result, _ := json.Marshal(signedTransaction)
+	return C.CString(string(result))
 }
 
 func main() {}

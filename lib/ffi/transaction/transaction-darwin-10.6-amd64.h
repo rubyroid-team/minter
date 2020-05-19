@@ -71,8 +71,6 @@ extern "C" {
 
 extern char* SignTransaction(char* p0);
 
-extern char* DecodeTransaction(char* p0);
-
 extern char* SignCreateCoinTransaction(char* p0);
 
 extern char* SignSellCoinTransaction(char* p0);
@@ -96,6 +94,8 @@ extern char* SignRedeemCheckTransaction(char* p0);
 extern char* SignEditCandidateTransaction(char* p0);
 
 extern char* SignMultiSendTransaction(char* p0);
+
+extern char* DecodeTransaction(char* p0);
 
 #ifdef __cplusplus
 }
