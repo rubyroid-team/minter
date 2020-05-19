@@ -8,6 +8,7 @@ require "minter/wallet.rb"
 require "minter/key.rb"
 require "ffi/wallet/wallet_ffi.rb"
 require "ffi/transaction/transaction_ffi.rb"
+require "minter/transactions/transaction.rb"
 Dir[File.dirname(__FILE__) + "/minter/transactions/*.rb"].each { |file| require_relative file }
 
 module Minter

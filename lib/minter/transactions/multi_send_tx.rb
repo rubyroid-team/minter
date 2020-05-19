@@ -1,7 +1,8 @@
 # frozen_string_literal: true
 
 module Minter
-  class MultiSendTx
+  class MultiSendTx < Transaction
+    SIGN_METHOD = :SignMultiSendTransaction
     attr_accessor :items, :coin, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(nonce:, chain_id:, gas_coin:, gas_price:)
@@ -14,13 +15,6 @@ module Minter
 
     def add_item(symbol:, value:, address_to:)
       @items << { Symbol: symbol, Value: value, AddressTo: address_to }
-    end
-
-    def sign(private_key)
-      params = to_params
-      params[:PrivateKey] = private_key
-      tx_hash = Minter::TransactionFfi.SignMultiSendTransaction(params.to_json)
-      SignedTx.new(tx_hash)
     end
 
     def to_params
