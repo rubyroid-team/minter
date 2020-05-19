@@ -828,16 +828,30 @@ Transaction for creating multisignature address.
 
 Transaction for sending coins to multiple addresses.
 
-##### Example
-
 ```ruby
-# IN PROGRESS
+transaction = Minter::MultiSendTx.new(
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: "MNT",
+  gas_price: 1
+)
+    
+transaction.add_item(
+  symbol: "MNT",
+  address_to: "Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99",
+  value: 100_000_000_000_000_000
+)
+    
+transaction.add_item(
+  symbol: "MNT",
+  address_to: "Mxddab6281766ad86497741ff91b6b48fe85012e3c",
+  value: 200_000_000_000_000_000
+)
 ```
 ### Get fee of transaction
 ```ruby
 # IN PROGRESS
 ```
-
 ### Decode Transaction
 
 ```ruby
