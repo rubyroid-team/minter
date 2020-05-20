@@ -110,7 +110,6 @@ func SignCreateCoinTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-
 	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
@@ -671,6 +670,63 @@ func SignMultiSendTransaction(paramsJson *C.char) *C.char {
 	return C.CString(string(resultJson))
 }
 
+type MultisigAddressItem struct {
+	Address string
+	Weight  uint
+}
+
+type MultisigAddressParams struct {
+	Addresses  []MultisigAddressItem
+	Threshold  uint
+	ChainId    byte
+	PrivateKey string
+	Nonce      uint64
+	GasPrice   uint8
+	GasCoin    string
+}
+
+//export SignCreateMultisiqAddressTransaction
+func SignCreateMultisiqAddressTransaction(paramsJson *C.char) *C.char {
+	var params MultisigAddressParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	err := json.Unmarshal(jsonBytes, &params)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	data := transaction.NewCreateMultisigData()
+
+	for _, address := range params.Addresses {
+		data.MustAddSigData(address.Address, address.Weight)
+	}
+	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	signedTransaction, err := tx.Sign(params.PrivateKey)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	encode, err := signedTransaction.Encode()
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	result := map[string]string {
+		"success": "true",
+		"tx_hash": encode,
+		"multisiq_address": data.AddressString(),
+	}
+	resultJson, _ := json.Marshal(result)
+	return C.CString(string(resultJson))
+}
 
 //export DecodeTransaction
 func DecodeTransaction(txHash *C.char) *C.char {

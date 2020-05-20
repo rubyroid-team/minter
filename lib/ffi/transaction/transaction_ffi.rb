@@ -20,6 +20,7 @@ module Minter
     attach_function :SignRedeemCheckTransaction, [:string], :string
     attach_function :SignEditCandidateTransaction, [:string], :string
     attach_function :SignMultiSendTransaction, [:string], :string
+    attach_function :SignCreateMultisiqAddressTransaction, [:string], :string
   end
 end
 

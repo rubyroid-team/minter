@@ -95,6 +95,8 @@ extern char* SignEditCandidateTransaction(char* p0);
 
 extern char* SignMultiSendTransaction(char* p0);
 
+extern char* SignCreateMultisiqAddressTransaction(char* p0);
+
 extern char* DecodeTransaction(char* p0);
 
 #ifdef __cplusplus
