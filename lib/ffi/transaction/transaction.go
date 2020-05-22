@@ -685,8 +685,8 @@ type MultisigAddressParams struct {
 	GasCoin    string
 }
 
-//export SignCreateMultisiqAddressTransaction
-func SignCreateMultisiqAddressTransaction(paramsJson *C.char) *C.char {
+//export SignCreateMultisigAddressTransaction
+func SignCreateMultisigAddressTransaction(paramsJson *C.char) *C.char {
 	var params MultisigAddressParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -722,7 +722,7 @@ func SignCreateMultisiqAddressTransaction(paramsJson *C.char) *C.char {
 	result := map[string]string {
 		"success": "true",
 		"tx_hash": encode,
-		"multisiq_address": data.AddressString(),
+		"multisig_address": data.AddressString(),
 	}
 	resultJson, _ := json.Marshal(result)
 	return C.CString(string(resultJson))

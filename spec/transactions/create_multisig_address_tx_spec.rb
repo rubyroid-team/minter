@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Minter::CreateMultisiqAddressTx do
+RSpec.describe Minter::CreateMultisigAddressTx do
   let(:address1) { "Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c" }
   let(:address2) { "Mx772fd5bd06356250e5efe572b6ae615860ee0c17" }
   let(:address3) { "Mx9c7f68ff71b5819c41e8f87cc99bdf6359da3d75" }
@@ -14,7 +14,7 @@ RSpec.describe Minter::CreateMultisiqAddressTx do
 
   describe "#sign" do
     it "returns signed transaction" do
-      transaction = Minter::CreateMultisiqAddressTx.new(
+      transaction = Minter::CreateMultisigAddressTx.new(
         threshold: 7,
         nonce: 11,
         chain_id: 2,
@@ -26,9 +26,9 @@ RSpec.describe Minter::CreateMultisiqAddressTx do
       transaction.add_address(address: address2, weight: 3)
       transaction.add_address(address: address3, weight: 5)
 
-      signed_tx, multisiq_address = transaction.sign(private_key)
+      signed_tx, multisig_address = transaction.sign(private_key)
       expect(signed_tx.tx_hash).to eq(valid_tx_hash)
-      expect(multisiq_address).to  eq("Mx5623dfdfaaf67a0d0ad13fbc43721237b955e1ca")
+      expect(multisig_address).to  eq("Mx5623dfdfaaf67a0d0ad13fbc43721237b955e1ca")
     end
   end
 end

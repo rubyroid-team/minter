@@ -1,8 +1,8 @@
 # frozen_string_literal: true
 
 module Minter
-  class CreateMultisiqAddressTx < Transaction
-    SIGN_METHOD = :SignCreateMultisiqAddressTransaction
+  class CreateMultisigAddressTx < Transaction
+    SIGN_METHOD = :SignCreateMultisigAddressTransaction
     attr_accessor :addresses, :threshold, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(threshold:, nonce:, chain_id:, gas_coin:, gas_price:)
@@ -35,7 +35,7 @@ module Minter
 
       result = JSON.parse(Minter::TransactionFfi.send(self.class::SIGN_METHOD, params.to_json))
       if result["success"]
-        [SignedTx.new(result["tx_hash"]), result["multisiq_address"]]
+        [SignedTx.new(result["tx_hash"]), result["multisig_address"]]
       else
         raise TransactionError, result["error"]
       end
