@@ -7,10 +7,10 @@ module Minter
       params[:PrivateKey] = private_key
 
       result = JSON.parse(Minter::TransactionFfi.send(self.class::SIGN_METHOD, params.to_json))
-      if result["success"]
-        SignedTx.new(result["tx_hash"])
+      if result["success"] == "true"
+        SignedTx.new(tx_hash: result["tx_hash"], fee: result["fee"])
       else
-        raise TransactionError.new(result["error"])
+        raise TransactionError, result["error"]
       end
     end
   end

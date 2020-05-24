@@ -53,7 +53,8 @@ func SignTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -110,7 +111,8 @@ func SignCreateCoinTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String()})
 	return C.CString(string(resultJson))
 }
 
@@ -162,8 +164,8 @@ func SignSellCoinTransaction(paramsJson *C.char) *C.char {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -215,8 +217,8 @@ func SignBuyCoinTransaction(paramsJson *C.char) *C.char {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -267,8 +269,8 @@ func SignSellAllCoinTransaction(paramsJson *C.char) *C.char {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -322,7 +324,8 @@ func SignDeclareCandidacyTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -373,7 +376,8 @@ func SignDelegateTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -424,7 +428,8 @@ func SignUnbondTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -471,7 +476,8 @@ func SignSetCandidateOffTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -508,7 +514,8 @@ func SignSetCandidateOnTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -557,7 +564,8 @@ func SignRedeemCheckTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -608,7 +616,8 @@ func SignEditCandidateTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -666,7 +675,8 @@ func SignMultiSendTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	fee := signedTransaction.Fee()
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
 	return C.CString(string(resultJson))
 }
 
@@ -719,10 +729,12 @@ func SignCreateMultisigAddressTransaction(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
+	fee := signedTransaction.Fee()
 	result := map[string]string {
 		"success": "true",
 		"tx_hash": encode,
 		"multisig_address": data.AddressString(),
+		"fee": fee.String(),
 	}
 	resultJson, _ := json.Marshal(result)
 	return C.CString(string(resultJson))
