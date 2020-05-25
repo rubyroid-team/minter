@@ -69,35 +69,33 @@ extern "C" {
 #endif
 
 
+extern char* BuyCoinTx(char* p0);
+
+extern char* CreateCoinTx(char* p0);
+
 extern char* SendCoinTx(char* p0);
 
-extern char* SignCreateCoinTransaction(char* p0);
+extern char* SellCoinTx(char* p0);
 
-extern char* SignSellCoinTransaction(char* p0);
+extern char* SellAllCoinTx(char* p0);
 
-extern char* SignBuyCoinTransaction(char* p0);
+extern char* DeclareCandidacyTx(char* p0);
 
-extern char* SignSellAllCoinTransaction(char* p0);
+extern char* DelegateTx(char* p0);
 
-extern char* SignDeclareCandidacyTransaction(char* p0);
+extern char* UnbondTx(char* p0);
 
-extern char* SignDelegateTransaction(char* p0);
+extern char* SetCandidateOffTx(char* p0);
 
-extern char* SignUnbondTransaction(char* p0);
+extern char* SetCandidateOnTx(char* p0);
 
-extern char* SignSetCandidateOffTransaction(char* p0);
+extern char* RedeemCheckTx(char* p0);
 
-extern char* SignSetCandidateOnTransaction(char* p0);
+extern char* EditCandidateTx(char* p0);
 
-extern char* SignRedeemCheckTransaction(char* p0);
+extern char* MultiSendTx(char* p0);
 
-extern char* SignEditCandidateTransaction(char* p0);
-
-extern char* SignMultiSendTransaction(char* p0);
-
-extern char* SignCreateMultisigAddressTransaction(char* p0);
-
-extern char* DecodeTransaction(char* p0);
+extern char* CreateMultisigAddressTx(char* p0);
 
 #ifdef __cplusplus
 }

@@ -885,8 +885,8 @@ transaction = Minter::SendCoinTx.new(
   gas_price: 10
 )
 
-signed_tx = transaction.sign(private_key)
-signed_tx.fee
+transaction.fee
+#=> ""
 
 ```
 ### Decode Transaction

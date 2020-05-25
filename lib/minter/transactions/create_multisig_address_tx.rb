@@ -35,7 +35,7 @@ module Minter
 
       result = JSON.parse(Minter::TransactionFfi.send(self.class::SIGN_METHOD, params.to_json))
       if result["success"]
-        [SignedTx.new(tx_hash: result["tx_hash"], fee: result["fee"]), result["multisig_address"]]
+        [SignedTx.new(tx_hash: result["tx_hash"], transaction: self), result["multisig_address"]]
       else
         raise TransactionError, result["error"]
       end

@@ -17,7 +17,7 @@ module Minter
     def tx_hash
       transaction_params = to_params
 
-      result = JSON.parse(Minter::TxHashFfi.send(self.class::FFI_METHOD, transaction_params.to_json))
+      result = JSON.parse(Minter::TxHashFfi.send(self.class.to_s.split("::")[1], transaction_params.to_json))
       raise TransactionError, result["error"] unless result["success"] == "true"
 
       result["tx_hash"]

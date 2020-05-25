@@ -7,14 +7,128 @@ import (
 	"math/big"
 )
 
+//attach_function :CreateMultisigAddressTx, [:string], :string
+//attach_function :DeclareCandidacyTx, [:string], :string
+//attach_function :DelegateTx, [:string], :string
+//attach_function :EditCandidateTx, [:string], :string
+//attach_function :MultiSendTx, [:string], :string
+//attach_function :RedeemCheckTx, [:string], :string
+//attach_function :SellAllCoinTx, [:string], :string
+//attach_function :SellCoinTx, [:string], :string
+//attach_function :SendCoinTx, [:string], :string
+//attach_function :SetCandidateOffTx, [:string], :string
+//attach_function :SetCandidateOnTx, [:string], :string
+//attach_function :UnbondTx, [:string], :string
+
+//BuyCoinTx
+type BuyCoinParams struct {
+	CoinToBuy          string
+	ValueToBuy         *big.Int
+	CoinToSell         string
+	MaximumValueToSell *big.Int
+
+	ChainId  byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
+}
+
+//export BuyCoinTx
+func BuyCoinTx(paramsJson *C.char) *C.char {
+	var params BuyCoinParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	err := json.Unmarshal(jsonBytes, &params)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	data := transaction.NewBuyCoinData().
+		SetCoinToBuy(params.CoinToBuy).
+		SetValueToBuy(params.ValueToBuy).
+		SetCoinToSell(params.CoinToSell).
+		SetMaximumValueToSell(params.MaximumValueToSell)
+
+	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	encode, err := tx.Encode()
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	return C.CString(string(resultJson))
+}
+
+
+// CreateCoinTX
+type CreateCoinParams struct {
+	Name           string
+	Symbol         string
+	InitialAmount  *big.Int
+	InitialReserve *big.Int
+	ReserveRation  uint
+	MaxSupply      *big.Int
+
+	ChainId  byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
+}
+
+//export CreateCoinTx
+func CreateCoinTx(paramsJson *C.char) *C.char {
+	var params CreateCoinParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	err := json.Unmarshal(jsonBytes, &params)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	data := transaction.NewCreateCoinData().
+		SetName(params.Name).
+		SetSymbol(params.Symbol).
+		SetInitialAmount(params.InitialAmount).
+		SetInitialReserve(params.InitialReserve).
+		SetConstantReserveRatio(params.ReserveRation).
+		SetMaxSupply(params.MaxSupply)
+
+	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+
+	encode, err := tx.Encode()
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
+	return C.CString(string(resultJson))
+}
+
+
+// SendCoinTx
 type SendCoinParams struct {
-	Nonce      uint64
-	ChainId    byte
-	AddressTo  string
-	Value      *big.Int
-	Coin       string
-	GasPrice   uint8
-	GasCoin    string
+	AddressTo string
+	Value     *big.Int
+	Coin      string
+
+	ChainId  byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
 //export SendCoinTx
@@ -47,67 +161,10 @@ func SendCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
-type CreateCoinParams struct {
-	Name           string
-	Symbol         string
-	InitialAmount  *big.Int
-	InitialReserve *big.Int
-	ReserveRation  uint
-	MaxSupply      *big.Int
-
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
-}
-
-//export SignCreateCoinTransaction
-func SignCreateCoinTransaction(paramsJson *C.char) *C.char {
-	var params CreateCoinParams
-	jsonBytes := []byte(C.GoString(paramsJson))
-	err := json.Unmarshal(jsonBytes, &params)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	data := transaction.NewCreateCoinData().
-		SetName(params.Name).
-		SetSymbol(params.Symbol).
-		SetInitialAmount(params.InitialAmount).
-		SetInitialReserve(params.InitialReserve).
-		SetConstantReserveRatio(params.ReserveRation).
-		SetMaxSupply(params.MaxSupply)
-
-	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
-
-	signedTransaction, err := tx.Sign(params.PrivateKey)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String()})
-	return C.CString(string(resultJson))
-}
 
 type SellCoinParams struct {
 	CoinToSell        string
@@ -115,15 +172,14 @@ type SellCoinParams struct {
 	CoinToBuy         string
 	MinimumValueToBuy *big.Int
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignSellCoinTransaction
-func SignSellCoinTransaction(paramsJson *C.char) *C.char {
+//export SellCoinTx
+func SellCoinTx(paramsJson *C.char) *C.char {
 	var params SellCoinParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -146,72 +202,12 @@ func SignSellCoinTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
-	return C.CString(string(resultJson))
-}
-
-type BuyCoinParams struct {
-	CoinToBuy          string
-	ValueToBuy         *big.Int
-	CoinToSell         string
-	MaximumValueToSell *big.Int
-
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
-}
-
-//export SignBuyCoinTransaction
-func SignBuyCoinTransaction(paramsJson *C.char) *C.char {
-	var params BuyCoinParams
-	jsonBytes := []byte(C.GoString(paramsJson))
-	err := json.Unmarshal(jsonBytes, &params)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	data := transaction.NewBuyCoinData().
-		SetCoinToBuy(params.CoinToBuy).
-		SetValueToBuy(params.ValueToBuy).
-		SetCoinToSell(params.CoinToSell).
-		SetMaximumValueToSell(params.MaximumValueToSell)
-
-	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
-
-	signedTransaction, err := tx.Sign(params.PrivateKey)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
 	return C.CString(string(resultJson))
 }
 
@@ -221,15 +217,14 @@ type SellAllCoinParams struct {
 	ValueToBuy        *big.Int
 	MinimumValueToBuy *big.Int
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignSellAllCoinTransaction
-func SignSellAllCoinTransaction(paramsJson *C.char) *C.char {
+//export SellAllCoinTx
+func SellAllCoinTx(paramsJson *C.char) *C.char {
 	var params SellAllCoinParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -251,19 +246,13 @@ func SignSellAllCoinTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
 	return C.CString(string(resultJson))
 }
 
@@ -274,15 +263,14 @@ type DeclareCandidacyParams struct {
 	Coin       string
 	Stake      *big.Int
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignDeclareCandidacyTransaction
-func SignDeclareCandidacyTransaction(paramsJson *C.char) *C.char {
+//export DeclareCandidacyTx
+func DeclareCandidacyTx(paramsJson *C.char) *C.char {
 	var params DeclareCandidacyParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -306,19 +294,13 @@ func SignDeclareCandidacyTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-	encode, err := signedTransaction.Encode()
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
 	return C.CString(string(resultJson))
 }
 
@@ -327,15 +309,14 @@ type DelegateParams struct {
 	Coin   string
 	Value  *big.Int
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignDelegateTransaction
-func SignDelegateTransaction(paramsJson *C.char) *C.char {
+//export DelegateTx
+func DelegateTx(paramsJson *C.char) *C.char {
 	var params DelegateParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -357,20 +338,13 @@ func SignDelegateTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -379,15 +353,14 @@ type UnbondParams struct {
 	Coin   string
 	Value  *big.Int
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignUnbondTransaction
-func SignUnbondTransaction(paramsJson *C.char) *C.char {
+//export UnbondTx
+func UnbondTx(paramsJson *C.char) *C.char {
 	var params UnbondParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -409,35 +382,28 @@ func SignUnbondTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
 type SetCandidateParams struct {
 	PubKey string
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignSetCandidateOffTransaction
-func SignSetCandidateOffTransaction(paramsJson *C.char) *C.char {
+//export SetCandidateOffTx
+func SetCandidateOffTx(paramsJson *C.char) *C.char {
 	var params SetCandidateParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -457,25 +423,18 @@ func SignSetCandidateOffTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
-//export SignSetCandidateOnTransaction
-func SignSetCandidateOnTransaction(paramsJson *C.char) *C.char {
+//export SetCandidateOnTx
+func SetCandidateOnTx(paramsJson *C.char) *C.char {
 	var params SetCandidateParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -495,20 +454,13 @@ func SignSetCandidateOnTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -516,15 +468,14 @@ type RedeemCheckParams struct {
 	Check string
 	Proof string
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignRedeemCheckTransaction
-func SignRedeemCheckTransaction(paramsJson *C.char) *C.char {
+//export RedeemCheckTx
+func RedeemCheckTx(paramsJson *C.char) *C.char {
 	var params RedeemCheckParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -545,20 +496,13 @@ func SignRedeemCheckTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -567,15 +511,15 @@ type EditCandidateParams struct {
 	RewardAddress string
 	OwnerAddress  string
 
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	ChainId byte
+
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignEditCandidateTransaction
-func SignEditCandidateTransaction(paramsJson *C.char) *C.char {
+//export EditCandidateTx
+func EditCandidateTx(paramsJson *C.char) *C.char {
 	var params EditCandidateParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -597,20 +541,13 @@ func SignEditCandidateTransaction(paramsJson *C.char) *C.char {
 
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -621,16 +558,16 @@ type MultiSendItem struct {
 }
 
 type MultiSendParams struct {
-	Items      []MultiSendItem
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	Items   []MultiSendItem
+	ChainId byte
+
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignMultiSendTransaction
-func SignMultiSendTransaction(paramsJson *C.char) *C.char {
+//export MultiSendTx
+func MultiSendTx(paramsJson *C.char) *C.char {
 	var params MultiSendParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -656,20 +593,13 @@ func SignMultiSendTransaction(paramsJson *C.char) *C.char {
 	}
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode, "fee": fee.String() })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -679,17 +609,17 @@ type MultisigAddressItem struct {
 }
 
 type MultisigAddressParams struct {
-	Addresses  []MultisigAddressItem
-	Threshold  uint
-	ChainId    byte
-	PrivateKey string
-	Nonce      uint64
-	GasPrice   uint8
-	GasCoin    string
+	Addresses []MultisigAddressItem
+	Threshold uint
+	ChainId   byte
+
+	Nonce    uint64
+	GasPrice uint8
+	GasCoin  string
 }
 
-//export SignCreateMultisigAddressTransaction
-func SignCreateMultisigAddressTransaction(paramsJson *C.char) *C.char {
+//export CreateMultisigAddressTx
+func CreateMultisigAddressTx(paramsJson *C.char) *C.char {
 	var params MultisigAddressParams
 	jsonBytes := []byte(C.GoString(paramsJson))
 	err := json.Unmarshal(jsonBytes, &params)
@@ -710,34 +640,19 @@ func SignCreateMultisigAddressTransaction(paramsJson *C.char) *C.char {
 	}
 	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
 
-	signedTransaction, err := tx.Sign(params.PrivateKey)
+	encode, err := tx.Encode()
 	if err != nil {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
 
-	encode, err := signedTransaction.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	fee := signedTransaction.Fee()
-	result := map[string]string {
-		"success": "true",
-		"tx_hash": encode,
+	result := map[string]string{
+		"success":          "true",
+		"tx_hash":          encode,
 		"multisig_address": data.AddressString(),
-		"fee": fee.String(),
 	}
 	resultJson, _ := json.Marshal(result)
 	return C.CString(string(resultJson))
-}
-
-//export DecodeTransaction
-func DecodeTransaction(txHash *C.char) *C.char {
-	signedTransaction, _ := transaction.Decode(C.GoString(txHash))
-	result, _ := json.Marshal(signedTransaction)
-	return C.CString(string(result))
 }
 
 func main() {}
