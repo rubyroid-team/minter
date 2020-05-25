@@ -2,7 +2,6 @@
 
 module Minter
   class CreateMultisigAddressTx < Transaction
-    SIGN_METHOD = :SignCreateMultisigAddressTransaction
     attr_accessor :addresses, :threshold, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(threshold:, nonce:, chain_id:, gas_coin:, gas_price:)
@@ -35,17 +34,5 @@ module Minter
 
       result["multisig_address"]
     end
-
-    # def sign(private_key)
-    #   params = to_params
-    #   params[:PrivateKey] = private_key
-    #
-    #   result = JSON.parse(Minter::TransactionFfi.send(self.class::SIGN_METHOD, params.to_json))
-    #   if result["success"]
-    #     [SignedTx.new(tx_hash: result["tx_hash"], transaction: self), result["multisig_address"]]
-    #   else
-    #     raise TransactionError, result["error"]
-    #   end
-    # end
   end
 end

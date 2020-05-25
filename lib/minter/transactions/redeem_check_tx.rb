@@ -2,7 +2,6 @@
 
 module Minter
   class RedeemCheckTx < Transaction
-    SIGN_METHOD = :SignRedeemCheckTransaction
     attr_accessor :check, :proof, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(check:, proof:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists

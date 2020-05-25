@@ -2,7 +2,6 @@
 
 module Minter
   class DeclareCandidacyTx < Transaction
-    SIGN_METHOD = :SignDeclareCandidacyTransaction
 
     attr_accessor :address, :pubkey, :commission, :coin, :stake, :nonce, :chain_id, :gas_coin, :gas_price
 

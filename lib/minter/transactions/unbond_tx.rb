@@ -2,7 +2,6 @@
 
 module Minter
   class UnbondTx < Transaction
-    SIGN_METHOD = :SignUnbondTransaction
     attr_accessor :pubkey, :coin, :value, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(pubkey:, coin:, value:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists

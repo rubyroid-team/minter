@@ -2,7 +2,6 @@
 
 module Minter
   class MultiSendTx < Transaction
-    SIGN_METHOD = :SignMultiSendTransaction
     attr_accessor :items, :coin, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(nonce:, chain_id:, gas_coin:, gas_price:)

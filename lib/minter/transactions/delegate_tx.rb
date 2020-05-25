@@ -2,7 +2,6 @@
 
 module Minter
   class DelegateTx < Transaction
-    SIGN_METHOD = :SignDelegateTransaction
     attr_accessor :pubkey, :coin, :value, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(pubkey:, coin:, value:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists

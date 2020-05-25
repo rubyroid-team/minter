@@ -2,7 +2,6 @@
 
 module Minter
   class CreateCoinTx < Transaction
-    SIGN_METHOD = :SignCreateCoinTransaction
     attr_accessor :name, :symbol, :initial_amount, :max_supply, :initial_reserve, :reserve_ratio, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(name:, symbol:, initial_amount:, max_supply:, initial_reserve:, reserve_ratio:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists

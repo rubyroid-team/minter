@@ -2,7 +2,6 @@
 
 module Minter
   class SetCandidateOnTx < Transaction
-    SIGN_METHOD = :SignSetCandidateOnTransaction
     attr_accessor :pubkey, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(pubkey:, nonce:, chain_id:, gas_coin:, gas_price:)

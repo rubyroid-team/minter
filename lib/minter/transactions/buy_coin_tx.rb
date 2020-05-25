@@ -2,7 +2,6 @@
 
 module Minter
   class BuyCoinTx < Transaction
-    SIGN_METHOD = :SignBuyCoinTransaction
     attr_accessor :coin_to_buy, :value_to_buy, :coin_to_sell, :maximum_value_to_sell, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(coin_to_buy:, value_to_buy:, coin_to_sell:, maximum_value_to_sell:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists

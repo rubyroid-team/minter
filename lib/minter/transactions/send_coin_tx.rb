@@ -2,8 +2,6 @@
 
 module Minter
   class SendCoinTx < Transaction
-    FFI_METHOD = :SendCoinTx
-    SIGN_METHOD = :SignTransaction
 
     attr_accessor :type, :address_to, :value, :coin, :nonce, :chain_id, :gas_coin, :gas_price
 

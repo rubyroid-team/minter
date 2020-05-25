@@ -7,19 +7,6 @@ import (
 	"math/big"
 )
 
-//attach_function :CreateMultisigAddressTx, [:string], :string
-//attach_function :DeclareCandidacyTx, [:string], :string
-//attach_function :DelegateTx, [:string], :string
-//attach_function :EditCandidateTx, [:string], :string
-//attach_function :MultiSendTx, [:string], :string
-//attach_function :RedeemCheckTx, [:string], :string
-//attach_function :SellAllCoinTx, [:string], :string
-//attach_function :SellCoinTx, [:string], :string
-//attach_function :SendCoinTx, [:string], :string
-//attach_function :SetCandidateOffTx, [:string], :string
-//attach_function :SetCandidateOnTx, [:string], :string
-//attach_function :UnbondTx, [:string], :string
-
 //BuyCoinTx
 type BuyCoinParams struct {
 	CoinToBuy          string
