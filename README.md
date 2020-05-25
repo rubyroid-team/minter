@@ -552,7 +552,24 @@ signed_tx.tx_hash
 
 #### Multi signatures
 ```ruby
-# IN PROGRESS
+multisig_address = "Mxeda4bb5456f5eb8a19f57c8c6ec844d05feae879"
+private_key1 = "4de029ca7b95c163f88c66e6351f2a986a48834b4681ec1e43eed5d120227103"
+private_key2 = "49e48cd0f81e7aabfc840301c66f00318f50b25c79664c3f337d7ad4f919638e"
+transaction = Minter::SendCoinTx.new(
+    address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
+    value: 4_000_000_000_000_000_000,
+    coin: "MNT",
+    nonce: 2,
+    chain_id: 2,
+    gas_coin: "MNT",
+    gas_price: 10
+)
+signed_tx = transaction.multisign(multisig_address, private_key1, private_key2)
+#=> #<Minter::SignedTx:0x00007fe340120090
+# @transaction=
+#  #<Minter::SendCoinTx:0x00007fe3411da908 @address_to="Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497", @chain_id=2, @coin="MNT", @gas_coin="MNT", @gas_price=10, @nonce=2, @value=4000000000000000000>,
+# @tx_hash=
+#  "0xf8e202020a8a4d4e540000000000000001aae98a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d497883782dace9d900000808002b8a3f8a194eda4bb5456f5eb8a19f57c8c6ec844d05feae879f88af8431ba0287dd3956acae624abc25e6ba60018f60a80e144f5678ceb35c35613fcd363bfa01886706c7ffa0e6ccfc7c3dda186d3e8beea5214c30502ad9a24d8a29ced685af8431ba0302a560b420ed0da95f4f8425ac605a2462d35449e44557f152c4308845e1710a04cd1b834752e3a26b0fd543a20e3ef99ca233b049e064146c6a8cdf19d895552">
 ```
 
 ### Create transaction
