@@ -2,11 +2,11 @@
 
 module Minter
   class SignedTx
-    attr_reader :tx_hash, :fee
+    attr_reader :tx_hash, :transaction
 
-    def initialize(tx_hash: nil, fee: nil)
+    def initialize(tx_hash: nil, transaction: nil)
       @tx_hash = tx_hash
-      @fee = fee
+      @transaction = transaction
     end
 
     def send

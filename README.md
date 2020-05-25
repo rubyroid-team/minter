@@ -879,7 +879,7 @@ transaction = Minter::SendCoinTx.new(
   address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
   value: 24_000_000_000_000_000_000,
   coin: "MNT",
-  nonce: 1,
+  nonce: 65,
   chain_id: 2,
   gas_coin: "MNT",
   gas_price: 10
