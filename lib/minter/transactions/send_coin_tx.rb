@@ -2,7 +2,6 @@
 
 module Minter
   class SendCoinTx < Transaction
-
     attr_accessor :type, :address_to, :value, :coin, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(address_to:, value:, coin:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists

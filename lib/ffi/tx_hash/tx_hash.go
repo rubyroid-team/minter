@@ -7,17 +7,21 @@ import (
 	"math/big"
 )
 
+type CommonParams struct {
+	SignatureType transaction.SignatureType
+	ChainId       byte
+	Nonce         uint64
+	GasPrice      uint8
+	GasCoin       string
+}
+
 //BuyCoinTx
 type BuyCoinParams struct {
 	CoinToBuy          string
 	ValueToBuy         *big.Int
 	CoinToSell         string
 	MaximumValueToSell *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export BuyCoinTx
@@ -42,7 +46,7 @@ func BuyCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -61,11 +65,7 @@ type CreateCoinParams struct {
 	InitialReserve *big.Int
 	ReserveRation  uint
 	MaxSupply      *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export CreateCoinTx
@@ -92,7 +92,7 @@ func CreateCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -109,11 +109,7 @@ type SendCoinParams struct {
 	AddressTo string
 	Value     *big.Int
 	Coin      string
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export SendCoinTx
@@ -138,7 +134,7 @@ func SendCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -155,11 +151,7 @@ type SellCoinParams struct {
 	ValueToSell       *big.Int
 	CoinToBuy         string
 	MinimumValueToBuy *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export SellCoinTx
@@ -184,7 +176,7 @@ func SellCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -200,11 +192,7 @@ type SellAllCoinParams struct {
 	CoinToBuy         string
 	ValueToBuy        *big.Int
 	MinimumValueToBuy *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export SellAllCoinTx
@@ -228,7 +216,7 @@ func SellAllCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -246,11 +234,7 @@ type DeclareCandidacyParams struct {
 	Commission uint
 	Coin       string
 	Stake      *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export DeclareCandidacyTx
@@ -276,7 +260,7 @@ func DeclareCandidacyTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -292,11 +276,7 @@ type DelegateParams struct {
 	PubKey string
 	Coin   string
 	Value  *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export DelegateTx
@@ -320,7 +300,7 @@ func DelegateTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -336,11 +316,7 @@ type UnbondParams struct {
 	PubKey string
 	Coin   string
 	Value  *big.Int
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export UnbondTx
@@ -364,7 +340,7 @@ func UnbondTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -378,11 +354,7 @@ func UnbondTx(paramsJson *C.char) *C.char {
 
 type SetCandidateParams struct {
 	PubKey string
-
-	ChainId byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export SetCandidateOffTx
@@ -404,7 +376,7 @@ func SetCandidateOffTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -435,7 +407,7 @@ func SetCandidateOnTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -450,11 +422,7 @@ func SetCandidateOnTx(paramsJson *C.char) *C.char {
 type RedeemCheckParams struct {
 	Check string
 	Proof string
-
-	ChainId  byte
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export RedeemCheckTx
@@ -477,7 +445,7 @@ func RedeemCheckTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -493,12 +461,7 @@ type EditCandidateParams struct {
 	PubKey        string
 	RewardAddress string
 	OwnerAddress  string
-
-	ChainId byte
-
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export EditCandidateTx
@@ -522,7 +485,7 @@ func EditCandidateTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -541,12 +504,8 @@ type MultiSendItem struct {
 }
 
 type MultiSendParams struct {
-	Items   []MultiSendItem
-	ChainId byte
-
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	Items []MultiSendItem
+	CommonParams
 }
 
 //export MultiSendTx
@@ -574,7 +533,7 @@ func MultiSendTx(paramsJson *C.char) *C.char {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {
@@ -594,11 +553,7 @@ type MultisigAddressItem struct {
 type MultisigAddressParams struct {
 	Addresses []MultisigAddressItem
 	Threshold uint
-	ChainId   byte
-
-	Nonce    uint64
-	GasPrice uint8
-	GasCoin  string
+	CommonParams
 }
 
 //export CreateMultisigAddressTx
@@ -621,7 +576,7 @@ func CreateMultisigAddressTx(paramsJson *C.char) *C.char {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin)
+	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
 
 	encode, err := tx.Encode()
 	if err != nil {

@@ -71,6 +71,8 @@ extern "C" {
 
 extern char* Sign(char* p0);
 
+extern char* MultiSign(char* p0);
+
 #ifdef __cplusplus
 }
 #endif

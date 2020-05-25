@@ -2,7 +2,6 @@
 
 module Minter
   class DeclareCandidacyTx < Transaction
-
     attr_accessor :address, :pubkey, :commission, :coin, :stake, :nonce, :chain_id, :gas_coin, :gas_price
 
     def initialize(address:, pubkey:, commission:, coin:, stake:, nonce:, chain_id:, gas_coin:, gas_price:) # rubocop:disable Metrics/ParameterLists
