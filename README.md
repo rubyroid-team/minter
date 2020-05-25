@@ -829,25 +829,19 @@ address3 = "Mx9c7f68ff71b5819c41e8f87cc99bdf6359da3d75"
 private_key =  "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63"
 
 transaction = Minter::CreateMultisigAddressTx.new(
-threshold: 7,
-nonce: 11,
-chain_id: 2,
-gas_coin: "MNT",
-gas_price: 1
+    threshold: 7,
+    nonce: 11,
+    chain_id: 2,
+    gas_coin: "MNT",
+    gas_price: 1
 )
 
 transaction.add_address(address: address1, weight: 1)
 transaction.add_address(address: address2, weight: 3)
 transaction.add_address(address: address3, weight: 5)
 
-signed_tx, multisig_address = transaction.sign(private_key)
-signed_tx 
-#=>
-<Minter::SignedTx:0x00007f9c9c3f73d0
-@tx_hash=
-"0xf8a30b02018a4d4e54000000000000000cb848f84680c3010305f83f9408d920c5d93dbf23038fe1a54bbb34f41f77677c949c7f68ff71b5819c41e8f87cc99bdf6359da3d75949c7f68ff71b5819c41e8f87cc99bdf6359da3d75808001b845f8431ba025e3c04956dad23abca2dee6ea5a4bcc8c148383f0cf081935add38b7e94bafba05bdbf3d63a5c4122a4eb9e5537972e124f9125316376bbffa590858881559463">
-multisig_address
-#=> "Mxc0edeaee8750330d01bcefcbd34198b2ef7b1167"
+transaction.multisig_address
+=> "Mxc0edeaee8750330d01bcefcbd34198b2ef7b1167"
 ```
 #### Multisend transaction
 
