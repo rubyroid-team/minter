@@ -29,16 +29,23 @@ module Minter
       }
     end
 
-    def sign(private_key)
-      params = to_params
-      params[:PrivateKey] = private_key
+    def multisig_address
+      result = JSON.parse(Minter::TxHashFfi.GetMultisigAddress(to_params.to_json))
+      raise TransactionError, result["error"] unless result["success"] == "true"
 
-      result = JSON.parse(Minter::TransactionFfi.send(self.class::SIGN_METHOD, params.to_json))
-      if result["success"]
-        [SignedTx.new(tx_hash: result["tx_hash"], transaction: self), result["multisig_address"]]
-      else
-        raise TransactionError, result["error"]
-      end
+      result["multisig_address"]
     end
+
+    # def sign(private_key)
+    #   params = to_params
+    #   params[:PrivateKey] = private_key
+    #
+    #   result = JSON.parse(Minter::TransactionFfi.send(self.class::SIGN_METHOD, params.to_json))
+    #   if result["success"]
+    #     [SignedTx.new(tx_hash: result["tx_hash"], transaction: self), result["multisig_address"]]
+    #   else
+    #     raise TransactionError, result["error"]
+    #   end
+    # end
   end
 end

@@ -9,6 +9,7 @@ module Minter
     attach_function :BuyCoinTx, [:string], :string
     attach_function :CreateCoinTx, [:string], :string
     attach_function :CreateMultisigAddressTx, [:string], :string
+    attach_function :GetMultisigAddress, [:string], :string
     attach_function :DeclareCandidacyTx, [:string], :string
     attach_function :DelegateTx, [:string], :string
     attach_function :EditCandidateTx, [:string], :string

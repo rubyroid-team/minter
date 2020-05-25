@@ -66,7 +66,6 @@ func BuyCoinTx(paramsJson *C.char) *C.char {
 	return C.CString(string(resultJson))
 }
 
-
 // CreateCoinTX
 type CreateCoinParams struct {
 	Name           string
@@ -118,7 +117,6 @@ func CreateCoinTx(paramsJson *C.char) *C.char {
 	return C.CString(string(resultJson))
 }
 
-
 // SendCoinTx
 type SendCoinParams struct {
 	AddressTo string
@@ -165,14 +163,13 @@ func SendCoinTx(paramsJson *C.char) *C.char {
 	return C.CString(string(resultJson))
 }
 
-
 type SellCoinParams struct {
 	CoinToSell        string
 	ValueToSell       *big.Int
 	CoinToBuy         string
 	MinimumValueToBuy *big.Int
 
-	ChainId byte
+	ChainId  byte
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -207,7 +204,7 @@ func SellCoinTx(paramsJson *C.char) *C.char {
 		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
 		return C.CString(string(resultJson))
 	}
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -217,7 +214,7 @@ type SellAllCoinParams struct {
 	ValueToBuy        *big.Int
 	MinimumValueToBuy *big.Int
 
-	ChainId byte
+	ChainId  byte
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -252,7 +249,7 @@ func SellAllCoinTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -263,7 +260,7 @@ type DeclareCandidacyParams struct {
 	Coin       string
 	Stake      *big.Int
 
-	ChainId byte
+	ChainId  byte
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -300,7 +297,7 @@ func DeclareCandidacyTx(paramsJson *C.char) *C.char {
 		return C.CString(string(resultJson))
 	}
 
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode })
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "tx_hash": encode})
 	return C.CString(string(resultJson))
 }
 
@@ -309,7 +306,7 @@ type DelegateParams struct {
 	Coin   string
 	Value  *big.Int
 
-	ChainId byte
+	ChainId  byte
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -353,7 +350,7 @@ type UnbondParams struct {
 	Coin   string
 	Value  *big.Int
 
-	ChainId byte
+	ChainId  byte
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -396,7 +393,6 @@ type SetCandidateParams struct {
 	PubKey string
 
 	ChainId byte
-
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -468,7 +464,7 @@ type RedeemCheckParams struct {
 	Check string
 	Proof string
 
-	ChainId byte
+	ChainId  byte
 	Nonce    uint64
 	GasPrice uint8
 	GasCoin  string
@@ -652,6 +648,26 @@ func CreateMultisigAddressTx(paramsJson *C.char) *C.char {
 		"multisig_address": data.AddressString(),
 	}
 	resultJson, _ := json.Marshal(result)
+	return C.CString(string(resultJson))
+}
+
+//export GetMultisigAddress
+func GetMultisigAddress(paramsJson *C.char) *C.char {
+	var params MultisigAddressParams
+	jsonBytes := []byte(C.GoString(paramsJson))
+	err := json.Unmarshal(jsonBytes, &params)
+	if err != nil {
+		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+		return C.CString(string(resultJson))
+	}
+
+	data := transaction.NewCreateMultisigData()
+
+	for _, address := range params.Addresses {
+		data.MustAddSigData(address.Address, address.Weight)
+	}
+
+	resultJson, _ := json.Marshal(map[string]string{"success": "true", "multisig_address": data.AddressString()})
 	return C.CString(string(resultJson))
 }
 
