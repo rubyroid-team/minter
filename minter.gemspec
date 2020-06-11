@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = "minter"
-  spec.version = "0.4.0"
+  spec.version = "0.4.1"
   spec.authors = ["Alexander Nikolaev"]
 
   spec.summary       = "This is a Ruby SDK based on Golang SDK for working with Minter blockchain"
@@ -15,7 +15,7 @@ Gem::Specification.new do |spec|
   spec.metadata["source_code_uri"] = "https://github.com/rubyroid-team/minter"
   spec.metadata["changelog_uri"] = "https://github.com/rubyroid-team/minter/blob/master/CHANGELOG.md"
 
-  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md", "{lib}/ffi/**.*"]
+  spec.files         = Dir["{lib}/**/*.rb", "bin/*", "LICENSE", "*.md", "lib/ffi/**/*"]
 
   spec.require_paths = ["lib"]
 
