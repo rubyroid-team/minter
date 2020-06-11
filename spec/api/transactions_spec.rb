@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-RSpec.describe Minter::Api::ValidatorsResource do
+RSpec.describe Minter::Api::TransactionsResource do
   describe "transaction_info" do
     let(:transaction_hash) { "Mt56c1957d15bf4143f7cd180f837bce51564a054cfbdaf5c5e179f9b0aad8e8b2" }
 
