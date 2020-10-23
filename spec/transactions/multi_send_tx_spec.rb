@@ -5,7 +5,7 @@ require "spec_helper"
 RSpec.describe Minter::MultiSendTx do
   let(:private_key) { "07bc17abdcee8b971bb8723e36fe9d2523306d5ab2d683631693238e0f9df142" }
   let(:valid_tx_hash) do
-    "0xf8b30102018a4d4e54000000000000000db858f856f854e98a4d4e540000000000000094fe60014a6e9ac91618f5d1cab3fd58cded61ee9988016345785d8a0000e98a4d4e540000000000000094ddab6281766ad86497741ff91b6b48fe85012e3c8802c68af0bb140000808001b845f8431ca0b15dcf2e013df1a2aea02e36a17af266d8ee129cdcb3e881d15b70c9457e7571a0226af7bdaca9d42d6774c100b22e0c7ba4ec8dd664d17986318e905613013283"
+    "0xf895010201010db844f842f840df0194fe60014a6e9ac91618f5d1cab3fd58cded61ee9988016345785d8a0000df0194ddab6281766ad86497741ff91b6b48fe85012e3c8802c68af0bb140000808001b845f8431ba0718f10b4468989919adabd215f5a6e83bd70eb1358d725541c2661122f66350ba05ab9e5e28107612f89ce56f4d7846edcbf272e8929eaf0c7c945e2530f40b667"
   end
 
   describe "#sign" do
@@ -13,18 +13,18 @@ RSpec.describe Minter::MultiSendTx do
       transaction = Minter::MultiSendTx.new(
         nonce: 1,
         chain_id: 2,
-        gas_coin: "MNT",
+        gas_coin: 1,
         gas_price: 1
       )
 
       transaction.add_item(
-        symbol: "MNT",
+        coin_id: 1,
         address_to: "Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99",
         value: 100_000_000_000_000_000
       )
 
       transaction.add_item(
-        symbol: "MNT",
+        coin_id: 1,
         address_to: "Mxddab6281766ad86497741ff91b6b48fe85012e3c",
         value: 200_000_000_000_000_000
       )

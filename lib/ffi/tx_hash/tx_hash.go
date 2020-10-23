@@ -3,7 +3,7 @@ package main
 import (
 	"C"
 	"encoding/json"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
+	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 	"math/big"
 )
 
@@ -12,14 +12,14 @@ type CommonParams struct {
 	ChainId       byte
 	Nonce         uint64
 	GasPrice      uint8
-	GasCoin       string
+	GasCoin       uint64
 }
 
 //BuyCoinTx
 type BuyCoinParams struct {
-	CoinToBuy          string
+	CoinToBuy          uint64
 	ValueToBuy         *big.Int
-	CoinToSell         string
+	CoinToSell         uint64
 	MaximumValueToSell *big.Int
 	CommonParams
 }
@@ -63,7 +63,7 @@ type CreateCoinParams struct {
 	Symbol         string
 	InitialAmount  *big.Int
 	InitialReserve *big.Int
-	ReserveRation  uint
+	ReserveRation  uint32
 	MaxSupply      *big.Int
 	CommonParams
 }
@@ -108,7 +108,7 @@ func CreateCoinTx(paramsJson *C.char) *C.char {
 type SendCoinParams struct {
 	AddressTo string
 	Value     *big.Int
-	Coin      string
+	Coin      uint64
 	CommonParams
 }
 
@@ -147,9 +147,9 @@ func SendCoinTx(paramsJson *C.char) *C.char {
 }
 
 type SellCoinParams struct {
-	CoinToSell        string
+	CoinToSell        uint32
 	ValueToSell       *big.Int
-	CoinToBuy         string
+	CoinToBuy         uint32
 	MinimumValueToBuy *big.Int
 	CommonParams
 }
@@ -188,8 +188,8 @@ func SellCoinTx(paramsJson *C.char) *C.char {
 }
 
 type SellAllCoinParams struct {
-	CoinToSell        string
-	CoinToBuy         string
+	CoinToSell        uint64
+	CoinToBuy         uint64
 	ValueToBuy        *big.Int
 	MinimumValueToBuy *big.Int
 	CommonParams
@@ -231,8 +231,8 @@ func SellAllCoinTx(paramsJson *C.char) *C.char {
 type DeclareCandidacyParams struct {
 	Address    string
 	PubKey     string
-	Commission uint
-	Coin       string
+	Commission uint32
+	Coin       uint64
 	Stake      *big.Int
 	CommonParams
 }
@@ -274,7 +274,7 @@ func DeclareCandidacyTx(paramsJson *C.char) *C.char {
 
 type DelegateParams struct {
 	PubKey string
-	Coin   string
+	Coin   uint64
 	Value  *big.Int
 	CommonParams
 }
@@ -314,7 +314,7 @@ func DelegateTx(paramsJson *C.char) *C.char {
 
 type UnbondParams struct {
 	PubKey string
-	Coin   string
+	Coin   uint64
 	Value  *big.Int
 	CommonParams
 }
@@ -461,6 +461,7 @@ type EditCandidateParams struct {
 	PubKey        string
 	RewardAddress string
 	OwnerAddress  string
+	ControlAddress string
 	CommonParams
 }
 
@@ -477,7 +478,8 @@ func EditCandidateTx(paramsJson *C.char) *C.char {
 	data := transaction.NewEditCandidateData().
 		MustSetPubKey(params.PubKey).
 		MustSetOwnerAddress(params.OwnerAddress).
-		MustSetRewardAddress(params.RewardAddress)
+		MustSetRewardAddress(params.RewardAddress).
+		MustSetControlAddress(params.ControlAddress)
 
 	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
 	if err != nil {
@@ -499,7 +501,7 @@ func EditCandidateTx(paramsJson *C.char) *C.char {
 
 type MultiSendItem struct {
 	AddressTo string
-	Symbol    string
+	CoinID    uint64
 	Value     *big.Int
 }
 
@@ -522,8 +524,8 @@ func MultiSendTx(paramsJson *C.char) *C.char {
 
 	for _, item := range params.Items {
 		data.AddItem(
-			*transaction.NewMultisendDataItem().
-				SetCoin(item.Symbol).
+			transaction.NewSendData().
+				SetCoin(item.CoinID).
 				SetValue(item.Value).
 				MustSetTo(item.AddressTo),
 		)
@@ -547,7 +549,7 @@ func MultiSendTx(paramsJson *C.char) *C.char {
 
 type MultisigAddressItem struct {
 	Address string
-	Weight  uint
+	Weight  uint32
 }
 
 type MultisigAddressParams struct {
@@ -556,61 +558,61 @@ type MultisigAddressParams struct {
 	CommonParams
 }
 
-//export CreateMultisigAddressTx
-func CreateMultisigAddressTx(paramsJson *C.char) *C.char {
-	var params MultisigAddressParams
-	jsonBytes := []byte(C.GoString(paramsJson))
-	err := json.Unmarshal(jsonBytes, &params)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	data := transaction.NewCreateMultisigData()
-
-	for _, address := range params.Addresses {
-		data.MustAddSigData(address.Address, address.Weight)
-	}
-	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
-
-	encode, err := tx.Encode()
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	result := map[string]string{
-		"success":          "true",
-		"tx_hash":          encode,
-		"multisig_address": data.AddressString(),
-	}
-	resultJson, _ := json.Marshal(result)
-	return C.CString(string(resultJson))
-}
-
-//export GetMultisigAddress
-func GetMultisigAddress(paramsJson *C.char) *C.char {
-	var params MultisigAddressParams
-	jsonBytes := []byte(C.GoString(paramsJson))
-	err := json.Unmarshal(jsonBytes, &params)
-	if err != nil {
-		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
-		return C.CString(string(resultJson))
-	}
-
-	data := transaction.NewCreateMultisigData()
-
-	for _, address := range params.Addresses {
-		data.MustAddSigData(address.Address, address.Weight)
-	}
-
-	resultJson, _ := json.Marshal(map[string]string{"success": "true", "multisig_address": data.AddressString()})
-	return C.CString(string(resultJson))
-}
+////export CreateMultisigAddressTx
+//func CreateMultisigAddressTx(paramsJson *C.char) *C.char {
+//	var params MultisigAddressParams
+//	jsonBytes := []byte(C.GoString(paramsJson))
+//	err := json.Unmarshal(jsonBytes, &params)
+//	if err != nil {
+//		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+//		return C.CString(string(resultJson))
+//	}
+//
+//	data := transaction.NewCreateMultisigData()
+//
+//	for _, address := range params.Addresses {
+//		data.MustAddSigData(address.Address, address.Weight)
+//	}
+//	tx, err := transaction.NewBuilder(transaction.ChainID(params.ChainId)).NewTransaction(data)
+//	if err != nil {
+//		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+//		return C.CString(string(resultJson))
+//	}
+//	tx.SetNonce(params.Nonce).SetGasPrice(params.GasPrice).SetGasCoin(params.GasCoin).SetSignatureType(params.SignatureType)
+//
+//	encode, err := tx.Encode()
+//	if err != nil {
+//		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+//		return C.CString(string(resultJson))
+//	}
+//
+//	result := map[string]string{
+//		"success":          "true",
+//		"tx_hash":          encode,
+//		"multisig_address": data.AddressString(),
+//	}
+//	resultJson, _ := json.Marshal(result)
+//	return C.CString(string(resultJson))
+//}
+//
+////export GetMultisigAddress
+//func GetMultisigAddress(paramsJson *C.char) *C.char {
+//	var params MultisigAddressParams
+//	jsonBytes := []byte(C.GoString(paramsJson))
+//	err := json.Unmarshal(jsonBytes, &params)
+//	if err != nil {
+//		resultJson, _ := json.Marshal(map[string]string{"success": "false", "error": err.Error()})
+//		return C.CString(string(resultJson))
+//	}
+//
+//	data := transaction.NewCreateMultisigData()
+//
+//	for _, address := range params.Addresses {
+//		data.MustAddSigData(address.Address, address.Weight)
+//	}
+//
+//	resultJson, _ := json.Marshal(map[string]string{"success": "true", "multisig_address": data.AddressString()})
+//	return C.CString(string(resultJson))
+//}
 
 func main() {}

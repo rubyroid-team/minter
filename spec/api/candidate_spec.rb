@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::Api::CandidateResource do
   describe "candidate" do
-    let(:public_key) { "Mp4d2900d19ee3ce815bdb38daa3bc8d15c2bbe4945c3cdfac80df3ae6da31464b" }
+    let(:public_key) { "Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5" }
     it "return candidate info" do
       client = Minter::Api::Client.new
       response = client.candidate(public_key: public_key)

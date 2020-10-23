@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::Api::TransactionsResource do
   describe "transaction_info" do
-    let(:transaction_hash) { "Mt56c1957d15bf4143f7cd180f837bce51564a054cfbdaf5c5e179f9b0aad8e8b2" }
+    let(:transaction_hash) { "Mt62b2edfc191d279bb7264e019b4784011d7853997f492c0efde0f94fef1851c4" }
 
     it "return transaction info" do
       client = Minter::Api::Client.new

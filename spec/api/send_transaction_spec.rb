@@ -6,7 +6,6 @@ RSpec.describe Minter::Api::SendTransactionResource do
   describe "send_transaction" do
     it "send transaction to blockchain" do
       client = Minter::Api::Client.new
-      client.node_url = "https://minter-node-1.testnet.minter.network:8841"
 
       mnemonic = "oppose gym crucial devote skin robust exile antique split clean bright move"
       sender_address = Minter::Key.address_from_mnemonic(mnemonic)
@@ -17,11 +16,11 @@ RSpec.describe Minter::Api::SendTransactionResource do
 
       transaction = Minter::SendCoinTx.new(
         address_to: receiver_address,
-        value: 1_000_000_000_000_000_000,
-        coin: "MNT",
+        value: 1_000_000_000_000_000,
+        coin: 0,
         nonce: nonce,
         chain_id: 2,
-        gas_coin: "MNT",
+        gas_coin: 0,
         gas_price: 1
       )
       response = transaction.sign(sender_private_key).send

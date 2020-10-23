@@ -2,7 +2,8 @@ package main
 
 import (
 	"C"
-	"github.com/MinterTeam/minter-go-sdk/wallet"
+	"github.com/MinterTeam/minter-go-sdk/v2/wallet"
+
 )
 
 //export NewMnemonic

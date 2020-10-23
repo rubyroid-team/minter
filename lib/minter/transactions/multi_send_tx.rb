@@ -12,8 +12,8 @@ module Minter
       @items = []
     end
 
-    def add_item(symbol:, value:, address_to:)
-      @items << { Symbol: symbol, Value: value, AddressTo: address_to }
+    def add_item(coin_id:, value:, address_to:)
+      @items << { CoinID: coin_id, Value: value, AddressTo: address_to }
     end
 
     def to_params

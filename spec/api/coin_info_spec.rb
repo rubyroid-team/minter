@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::Api::CoinResource do
   describe "coin_info" do
-    let(:symbol) { "CAPITAL" }
+    let(:symbol) { "MNT" }
     it "return coin info" do
       client = Minter::Api::Client.new
       response = client.coin_info(symbol: symbol, height: 1)

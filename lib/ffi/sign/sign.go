@@ -3,7 +3,7 @@ package main
 import (
 	"C"
 	"encoding/json"
-	"github.com/MinterTeam/minter-go-sdk/transaction"
+	"github.com/MinterTeam/minter-go-sdk/v2/transaction"
 )
 
 type SignParams struct {

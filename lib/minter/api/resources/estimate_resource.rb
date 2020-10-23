@@ -17,7 +17,7 @@ module Minter
 
       def estimate_coin_sell_all(coinToSell:, valueToSell:, coinToBuy:, gasPrice:, height: nil)
         path = "/estimate_coin_sell_all"
-        params = { coinToSell: coinToSell, valueToSell: valueToBuy, coinToBuy: coinToBuy, gasPrice: gasPrice, height: height }.compact
+        params = { coinToSell: coinToSell, valueToSell: valueToSell, coinToBuy: coinToBuy, gasPrice: gasPrice, height: height }.compact
         get(path, params)
       end
 

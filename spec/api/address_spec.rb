@@ -11,7 +11,8 @@ RSpec.describe Minter::Api::AddressResource do
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
       expect(response.body["result"]).not_to be_nil
-      expect(response.body["result"]["balance"]).not_to be_nil
+      # binding.pry
+      expect(response.body["result"]["balances"]).not_to be_nil
       expect(response.body["result"]["transaction_count"]).not_to be_nil
     end
   end
@@ -23,7 +24,7 @@ RSpec.describe Minter::Api::AddressResource do
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
       expect(response.body["result"]).not_to be_nil
-      expect(response.body["result"]["balance"]).not_to be_nil
+      expect(response.body["result"]["balances"]).not_to be_nil
       expect(response.body["result"]["transaction_count"]).not_to be_nil
     end
   end

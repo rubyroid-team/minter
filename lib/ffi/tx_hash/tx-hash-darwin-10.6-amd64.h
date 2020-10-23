@@ -95,10 +95,6 @@ extern char* EditCandidateTx(char* p0);
 
 extern char* MultiSendTx(char* p0);
 
-extern char* CreateMultisigAddressTx(char* p0);
-
-extern char* GetMultisigAddress(char* p0);
-
 #ifdef __cplusplus
 }
 #endif
