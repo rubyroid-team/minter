@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |spec|
   spec.name = "minter"
-  spec.version = "0.4.1"
+  spec.version = "0.5.0"
   spec.authors = ["Alexander Nikolaev"]
 
   spec.summary       = "This is a Ruby SDK based on Golang SDK for working with Minter blockchain"
