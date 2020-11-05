@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::SellAllCoinTx do
   subject do
-    described_class.new(
+    Minter::SellAllCoinTx.new(
       coin_to_sell: 1,
       coin_to_buy: 2,
       minimum_value_to_buy: 1_000_000_000_000_000_000,

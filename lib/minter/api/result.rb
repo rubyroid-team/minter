@@ -30,8 +30,6 @@ module Minter
       def handle_error_response(response)
         response_body = JSON.parse(response.body)
 
-        binding.pry
-
         case response.status.code
         when 400
           raise BadRequestError, response_body

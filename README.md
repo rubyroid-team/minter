@@ -92,7 +92,7 @@ Create Minter::Api client
 require "minter"
 
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 ```
 
 ### Address
@@ -101,14 +101,14 @@ Returns coins list, balance and transaction count (for nonce) of an address.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
 response = client.address(address: address)
 response.status
 #=> 200
 response.body
-#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>{"balance"=>{"DEVDEV"=>"1000000000000002000", "DEVTWO"=>"1000000000000000000", "MNT"=>"66565140000000800001000"}, "transaction_count"=>"31"}}
+#=> {"balance"=>[{"coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"29999857000000000000000", "bip_value"=>"29999857000000000000000"}], "delegated"=>[], "total"=>[], "transaction_count"=>"13", "bip_value"=>"29999857000000000000000"}
 ````
 
 ### Address at height
@@ -117,14 +117,14 @@ Returns coins list, balance and transaction count (for nonce) of an address.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
 response = client.address(address: address, height: 1)
 response.status
 #=> 200
 response.body
-#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>{"balance"=>{"MNT"=>"0"}, "transaction_count"=>"0"}}
+#=> {"balance"=>[], "delegated"=>[], "total"=>[], "transaction_count"=>"0", "bip_value"=>"0"} 
 
 ````
 
@@ -134,14 +134,14 @@ Returns coins list, balance and transaction count (for nonce) of an address.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
 response = client.balance(address: address)
 response.status
 #=> 200
 response.body
-#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>{"balance"=>{"DEVDEV"=>"1000000000000002000", "DEVTWO"=>"1000000000000000000", "MNT"=>"66565140000000800001000"}, "transaction_count"=>"31"}}
+#=> {"balance"=>[{"coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"29999857000000000000000", "bip_value"=>"29999857000000000000000"}], "delegated"=>[], "total"=>[], "transaction_count"=>"13", "bip_value"=>"29999857000000000000000"} 
 ````
 
 
@@ -152,11 +152,11 @@ Returns next transaction number (nonce) of an address.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 address = "Mx251cb0043a0240779103aa7c210f638f887699f8"
 nonce = client.nonce(address: address)
-#=> 28
+#=> 14
 ```
 
 ### Block
@@ -165,22 +165,14 @@ Returns block data at given height.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.block(height: 1)
 response.status
 #=> 200
 response.body
-#=> {"jsonrpc"=>"2.0",
-#  "id"=>"",
-#  "result"=>
-#   {"hash"=>"499a3ba23ec8a046eb7d1eecdf4123b795e2ba3df0e57122f75fa656144553ea",
-#    "height"=>"1",
-#    "time"=>"2020-04-08T13:00:00Z",
-#    "num_txs"=>"0",
-#    "transactions"=>[],
-#    "block_reward"=>"331000000000000000000",
-#    "size"=>"280"}}
+#=> {"hash"=>"8e2534065f3fb281b3834ae79383cd75cb06245b33bd96a0d87370340039f7bc", "height"=>"1", "time"=>"1970-01-01T00:00:00Z", "transaction_count"=>"0", "transactions"=>[], "block_reward"=>"333000000000000000000", "size"=>"270", "proposer"=>"Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5", "validators"=>[{"public_key"=>"Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5", "signed"=>false}], "evidence"=>{"evidence"=>[]}, "missed"=>[]} 
+
 
 ```
 
@@ -190,23 +182,14 @@ Returns candidate’s info by provided public_key. It will respond with 404 code
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
-public_key = "Mp4d2900d19ee3ce815bdb38daa3bc8d15c2bbe4945c3cdfac80df3ae6da31464b"
+public_key = "Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5"
 response = client.candidate(public_key: public_key)
 response.status
 #=> 200
 response.body
-#=> {"jsonrpc"=>"2.0",
-#  "id"=>"",
-#  "result"=>
-#   {"reward_address"=>"Mx251cb0043a0240779103aa7c210f638f887699f8",
-#    "owner_address"=>"Mx251cb0043a0240779103aa7c210f638f887699f8",
-#    "total_stake"=>"4950000000000000000",
-#    "pub_key"=>"Mp4d2900d19ee3ce815bdb38daa3bc8d15c2bbe4945c3cdfac80df3ae6da31464b",
-#    "commission"=>"10",
-#    "stakes"=>[{"owner"=>"Mx251cb0043a0240779103aa7c210f638f887699f8", "coin"=>"MNT", "value"=>"4950000000000000000", "bip_value"=>"4950000000000000000"}],
-#    "status"=>1}}
+#=> {"reward_address"=>"Mxa83d8ebbe688b853775a698683b77afa305a661e", "owner_address"=>"Mxa83d8ebbe688b853775a698683b77afa305a661e", "control_address"=>"Mxa83d8ebbe688b853775a698683b77afa305a661e", "total_stake"=>"2444011225306401876946221", "public_key"=>"Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5", "commission"=>"5", "used_slots"=>"10", "uniq_users"=>"6", "min_stake"=>"0", "stakes"=>[{"owner"=>"Mxa83d8ebbe688b853775a698683b77afa305a661e", "coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"1000000000000000000000000", "bip_value"=>"1000000000000000000000000"}, {"owner"=>"Mx69ebd94f75444b22953c7a439f7ccef6d9e9be5a", "coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"10000000000000000000", "bip_value"=>"10000000000000000000"}, {"owner"=>"Mx3e3b5d6087f58f2592623a62da9618a2ee020d2d", "coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"824272819147233530716891", "bip_value"=>"824272819147233530716891"}, {"owner"=>"Mxeb92ae39b84012968f63b2dd260a94d791fe79bd", "coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"609007403767000000000000", "bip_value"=>"609007403767000000000000"}, {"owner"=>"Mxeb92ae39b84012968f63b2dd260a94d791fe79bd", "coin"=>{"id"=>"5", "symbol"=>"SMALCOIN-1"}, "value"=>"27704575686000000000000", "bip_value"=>"163214040105490477218"}, {"owner"=>"Mxeb92ae39b84012968f63b2dd260a94d791fe79bd", "coin"=>{"id"=>"6", "symbol"=>"SMALCOIN"}, "value"=>"23500946264000000000000", "bip_value"=>"5258446493070597814637"}, {"owner"=>"Mxeb92ae39b84012968f63b2dd260a94d791fe79bd", "coin"=>{"id"=>"1", "symbol"=>"CUSTOM"}, "value"=>"7648158824000000000000", "bip_value"=>"1530873792242471521"}, {"owner"=>"Mxeb92ae39b84012968f63b2dd260a94d791fe79bd", "coin"=>{"id"=>"4", "symbol"=>"BIGCOIN"}, "value"=>"22993066314000000000000", "bip_value"=>"5286810985200015465954"}, {"owner"=>"Mxeeda61bbe9929bf883af6b22f5796e4b92563ba4", "coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"5000000000000000000", "bip_value"=>"5000000000000000000"}, {"owner"=>"Mx0004ae43810ac75200a0c681487d1748a4f1e0b3", "coin"=>{"id"=>"0", "symbol"=>"MNT"}, "value"=>"6000000000000000000", "bip_value"=>"6000000000000000000"}], "status"=>"2"} 
 ```
 ### Candidates
 
@@ -214,29 +197,27 @@ Returns list of candidates.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.candidates
 response.status
 #=> 200
 response.body
-#=> {"jsonrpc"=>"2.0",
-#    "id"=>"",
-#    "result"=>
-#     [
-#      {"reward_address"=>"Mx9816046484c7c50fc43d5a564cadb494910a27b7",
-#       "owner_address"=>"Mx9816046484c7c50fc43d5a564cadb494910a27b7",
-#       "total_stake"=>"100019333250000000000000",
-#       "pub_key"=>"Mpf17328239cd81453b9e9393f66137e5442fb108c7b4fc36b6acfd838f7e6e0c4",
-#       "commission"=>"85",
-#       "status"=>2},
-#      {"reward_address"=>"Mx69ebd94f75444b22953c7a439f7ccef6d9e9be5a",
-#      "owner_address"=>"Mx3b3af9a8520910b29735ca44a64f52f09f057d64",
-#      "total_stake"=>"49500000000000000000",
-#      "pub_key"=>"Mpab7a9b763569a45b3221d4276e72466c225524354eee6c7d2e12858ac0eef864",
-#      "commission"=>"1",
-#      "status"=>1}
-#      ]
+{
+	"candidates" => [{
+		"reward_address" => "Mxa83d8ebbe688b853775a698683b77afa305a661e",
+		"owner_address" => "Mxa83d8ebbe688b853775a698683b77afa305a661e",
+		"control_address" => "Mxa83d8ebbe688b853775a698683b77afa305a661e",
+		"total_stake" => "1000000000000000000000000",
+		"public_key" => "Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5",
+		"commission" => "5",
+		"used_slots" => nil,
+		"uniq_users" => nil,
+		"min_stake" => nil,
+		"stakes" => [],
+		"status" => "2"
+	}]
+}
 ```
 
 ### CoinInfo
@@ -246,7 +227,7 @@ Note: this method does not return information about base coins (MNT and BIP).
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.coin_info("CAPITAL")
 response.status
@@ -269,7 +250,7 @@ Return estimate of buy coin transaction.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.estimate_coin_buy(coinToSell: "BIP", valueToBuy: 1, coinToBuy: "MNT")
 response.status
@@ -282,7 +263,7 @@ Return estimate of sell coin transaction.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.estimate_coin_sell(coinToSell: "BIP", valueToSell: 1, coinToBuy: "MNT")
 response.status
@@ -294,7 +275,7 @@ Return estimate of transaction.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.estimate_tx_comission(transaction: "0xf88522020a8a4d4e540000000000000001abea8a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d49789014d1120d7b1600000808001b845f8431ba07424d88d612132c847c1c92c1f471471fa8034914260223cb547f097e2bd7587a0201fa4d869ba564538996a71e6aa1e2b069d746b8fa0a563e023989986ae91a7")
 ```
@@ -305,7 +286,7 @@ Returns events at given height.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.events(height: 1)
 ```
@@ -317,13 +298,13 @@ Returns current max gas.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.max_gas
 response.status
 #=>200
 response.body
-#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"100000"}
+#=> {"max_gas_price"=>"100000"}
 ```
 
 ### MinGasPrice
@@ -332,13 +313,13 @@ Returns current min gas price.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.min_gas_price
 response.status
 #=>200
 response.body
-#=> {"jsonrpc"=>"2.0", "id"=>"", "result"=>"1"}
+#=> {"min_gas_price"=>"1"}
 
 ```
 
@@ -348,7 +329,7 @@ Returns missed blocks by validator public key.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.missed_block(public_key: public_key)
 ```
@@ -366,7 +347,7 @@ response.status
 #=> 200
 response.body
 #=>
-{"jsonrpc"=>"2.0", "id"=>"", "result"=>{"code"=>0, "data"=>"", "log"=>"", "hash"=>"9219C1FA06D72C2A4ACDFB4D20F52E3F536C6134E20F485F1E2EA6D71C0DFA20"}} 
+{"code"=>"0", "log"=>"", "hash"=>"Mt0cfac66950c621db243fcdd68530b455f2c579dda7a7c602822355a80e9815d2"}  
 ```
 
 ### Status
@@ -375,40 +356,26 @@ Returns node status info.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.status
 response.status
 #=>200
 response.body
 #=>
- {"jsonrpc"=>"2.0",
-   "id"=>"",
-   "result"=>
-    {"version"=>"1.1.6-testnet",
-     "latest_block_hash"=>"E20E0B26DAB8CEE5AC1CB46B5184C63565522978EDF153DA3017C7D34F2D3F30",
-     "latest_app_hash"=>"995C21A980D4E0A7649E56252CB4E279A5820655B717A017FC09FE2E9D841554",
-     "latest_block_height"=>"702448",
-     "latest_block_time"=>"2020-05-12T20:59:23.252868652Z",
-     "keep_last_states"=>"120",
-     "tm_status"=>
-      {"node_info"=>
-        {"protocol_version"=>{"p2p"=>"7", "block"=>"10", "app"=>"6"},
-         "id"=>"4735e67924e611b89fbd3f951441b5e912e226d3",
-         "listen_addr"=>"tcp://0.0.0.0:26656",
-         "network"=>"minter-testnet-08-04",
-         "version"=>"0.33.2",
-         "channels"=>"4020212223303800",
-         "moniker"=>"minter-node-1.testnet.minter.network",
-         "other"=>{"tx_index"=>"on", "rpc_address"=>"tcp://127.0.0.1:26657"}},
-       "sync_info"=>
-        {"latest_block_hash"=>"E20E0B26DAB8CEE5AC1CB46B5184C63565522978EDF153DA3017C7D34F2D3F30",
-         "latest_app_hash"=>"995C21A980D4E0A7649E56252CB4E279A5820655B717A017FC09FE2E9D841554",
-         "latest_block_height"=>"702448",
-         "latest_block_time"=>"2020-05-12T20:59:23.252868652Z",
-         "catching_up"=>false},
-       "validator_info"=>
-        {"address"=>"43253BE55C58BCA3045BEFABEF873944B56E3555", "pub_key"=>{"type"=>"tendermint/PubKeyEd25519", "value"=>"DSmoPlRlOh1fNOVh4BNfHoHLyuFS8fMnqzaFen4y3kw="}, "voting_power"=>"98784385"}}}}
+ {
+   "version" => "1.2.0-a7c02e42-testnet",
+   "network" => "minter-1-2-testnet",
+   "latest_block_hash" => "553F412E3BDD05932F96AFC79C750ACCB6C6D65D253D627A9D8A88D5C893CD1A",
+   "latest_app_hash" => "4337152D2F002F604CF338C29BC4AA1AF1729A93228E074153FDFF722CE33324",
+   "latest_block_height" => "281797",
+   "latest_block_time" => "2020-11-05T06:05:39.586760081Z",
+   "keep_last_states" => "1000000",
+   "total_slashed" => "433000000000000015854",
+   "catching_up" => false,
+   "public_key" => "Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5",
+   "node_id" => "95fa41d84670bc98691101406d62aed9d64459f4"
+ }
 
 ```
 
@@ -418,32 +385,30 @@ Returns transaction info.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
-transaction_hash = "Mt56c1957d15bf4143f7cd180f837bce51564a054cfbdaf5c5e179f9b0aad8e8b2"
+transaction_hash = "Mt0cfac66950c621db243fcdd68530b455f2c579dda7a7c602822355a80e9815d2"
 
 response = client.transaction_info(transaction_hash: transaction_hash)
 response.status
 #=>200
 response.body
 #=>
- {"jsonrpc"=>"2.0",
- "id"=>"",
- "result"=>
-  {"hash"=>"56C1957D15BF4143F7CD180F837BCE51564A054CFBDAF5C5E179F9B0AAD8E8B2",
-   "raw_tx"=>
-    "f88522020a8a4d4e540000000000000001abea8a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d49789014d1120d7b1600000808001b845f8431ba07424d88d612132c847c1c92c1f471471fa8034914260223cb547f097e2bd7587a0201fa4d869ba564538996a71e6aa1e2b069d746b8fa0a563e023989986ae91a7",
-   "height"=>"701284",
-   "index"=>0,
-   "from"=>"Mx251cb0043a0240779103aa7c210f638f887699f8",
-   "nonce"=>"34",
-   "gas"=>"10",
-   "gas_price"=>10,
-   "gas_coin"=>"MNT",
-   "type"=>1,
-   "data"=>{"coin"=>"MNT", "to"=>"Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497", "value"=>"24000000000000000000"},
-   "payload"=>"",
-   "tags"=>{"tx.type"=>"01", "tx.from"=>"251cb0043a0240779103aa7c210f638f887699f8", "tx.to"=>"e7812ab98ac5ac37e2ab20da3136ad91bb22d497", "tx.coin"=>"MNT"}}}
+ {
+   "hash" => "Mt0cfac66950c621db243fcdd68530b455f2c579dda7a7c602822355a80e9815d2", "raw_tx" => "f86f0e020180019fde8094eeee1973381ab793719fff497b9a516719fcd5a287038d7ea4c68000808001b845f8431ba0b4f6ef634625c12a7cb08ca568dca87fec2ca696bde99f2669c4e297748ce7a2a00ba8fab69667b0d849054ac8d21c3194f1dfcfca01ddafacd19d0e7f708933bd", "height" => "281792", "index" => "0", "from" => "Mx251cb0043a0240779103aa7c210f638f887699f8", "nonce" => "14", "gas" => "10", "gas_price" => "1", "gas_coin" => {
+     "id" => "0", "symbol" => "MNT"
+   },
+   "type" => "1", "data" => {
+     "@type" => "type.googleapis.com/api_pb.SendData", "coin" => {
+       "id" => "0", "symbol" => "MNT"
+     }, "to" => "Mxeeee1973381ab793719fff497b9a516719fcd5a2", "value" => "1000000000000000"
+   },
+   "payload" => nil, "tags" => {
+     "tx.coin_id" => "0", "tx.from" => "251cb0043a0240779103aa7c210f638f887699f8", "tx.to" => "eeee1973381ab793719fff497b9a516719fcd5a2", "tx.type" => "01"
+   },
+   "code" => "0",
+   "log" => ""
+ }
 ```
 
 ### Transactions
@@ -452,34 +417,14 @@ Return transactions by query.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
-query = "tags.tx.coin='MNT'" 
+query = "tags.tx.coin='0'" 
 page = 1
 per_page = 1
 response = client.transactions(query: query, per_page: per_page, page: page)
 response.status
 #=> 200
-response.body
-#=> 
-{"jsonrpc"=>"2.0",
- "id"=>"",
- "result"=>
-  [{"hash"=>"9398DB947BC1397212C3F7FBE3D4131E68DDD1CA5AD36860DF5D7700E1C279EB",
-    "raw_tx"=>
-     "f87e82229102018a4d4e540000000000000001a2e18a4d4e540000000000000094a1f103c242237370d409ff5ff9f1817d42f94dda80808001b845f8431ba0a377be8dcab2a0cd005a8b392876724ed97aea4c312dc1081f581384ec938a1da01851f86f174c6d104ebb61cdab4e38056641147777e12e1184d8140c2b85d080",
-    "height"=>"702308",
-    "index"=>0,
-    "from"=>"Mxa1f103c242237370d409ff5ff9f1817d42f94dda",
-    "nonce"=>"8849",
-    "gas"=>"10",
-    "gas_price"=>1,
-    "gas_coin"=>"MNT",
-    "type"=>1,
-    "data"=>{"coin"=>"MNT", "to"=>"Mxa1f103c242237370d409ff5ff9f1817d42f94dda", "value"=>"0"},
-    "payload"=>"",
-    "tags"=>{"tx.type"=>"01", "tx.from"=>"a1f103c242237370d409ff5ff9f1817d42f94dda", "tx.to"=>"a1f103c242237370d409ff5ff9f1817d42f94dda", "tx.coin"=>"MNT"}}]}
-
 ```
 
 ### Unconfirmed Transactions
@@ -489,7 +434,7 @@ Returns unconfirmed transactions.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 query = "tags.tx.coin='MNT'" 
 page = 1
@@ -497,9 +442,6 @@ per_page = 1
 response = client.unconfirmed_transactions
 response.status
 #=> 200
-response.body
-#=>
-{"jsonrpc"=>"2.0", "id"=>"", "result"=>{"n_txs"=>"0", "total"=>"0", "total_bytes"=>"0", "txs"=>[]}}
 ```
 
 ### Validators
@@ -508,21 +450,14 @@ Returns list of active validators.
 
 ```ruby
 client = Minter::Api::Client.new
-client.node_url = "https://minter-node-1.testnet.minter.network:8841"
+client.node_url = "https://node-api.testnet.minter.network/v2"
 
 response = client.validators
 response.status
 #=>200
 response.body
 #=>
-{"jsonrpc"=>"2.0",
- "id"=>"",
- "result"=>
-  [{"pub_key"=>"Mp0d29a83e54653a1d5f34e561e0135f1e81cbcae152f1f327ab36857a7e32de4c", "voting_power"=>"99121402"},
-   {"pub_key"=>"Mpa3c16ffc2af26f199dd23c52932ce22441f848aa3ab2b7015de01e2f9c293464", "voting_power"=>"49661"},
-   {"pub_key"=>"Mpf17328239cd81453b9e9393f66137e5442fb108c7b4fc36b6acfd838f7e6e0c4", "voting_power"=>"9911"},
-   {"pub_key"=>"Mp14c93843ca40a62b9e7d02a824e7ffe83b49e3329ae963afdd7e500071ab9bfc", "voting_power"=>"819024"}]}
-
+{"validators"=>[{"public_key"=>"Mpd83e627510eea6aefa46d9914b0715dabf4a561ced78d34267b31d41d5f700b5", "voting_power"=>"100000000"}]} 
 
 ```
 
@@ -535,19 +470,26 @@ Returns a signed tx.
 #### Single signature
 
 ```ruby
+mnemonic = "oppose gym crucial devote skin robust exile antique split clean bright move"
+sender_address = Minter::Key.address_from_mnemonic(mnemonic)
+sender_private_key = Minter::Key.private_key_from_mnemonic(mnemonic)
+nonce = client.nonce(address: sender_address)
+
+receiver_address = "Mxeeee1973381ab793719fff497b9a516719fcd5a2"
+
 transaction = Minter::SendCoinTx.new(
-  address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
-  value: 24_000_000_000_000_000_000,
-  coin: "MNT",
-  nonce: 1,
-  chain_id: 2,
-  gas_coin: "MNT",
-  gas_price: 10
+    address_to: receiver_address,
+    value: 1_000_000_000_000_000,
+    coin: 0,
+    nonce: nonce,
+    chain_id: 2,
+    gas_coin: 0,
+    gas_price: 1
 )
 
-signed_tx = transaction.sign(private_key)
+signed_tx = transaction.sign(sender_private_key)
 signed_tx.tx_hash
-#=> "0xf88501020a8a4d4e540000000000000001abea8a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d49789014d1120d7b1600000808001b845f8431ba07fde3c0e8d9ffb5fd7025099c9f3672deffab0b784787f5d45ea8f27b0ffe989a02f7cd63ac0d75e559f540d8b33464b11da4605e623d62a5b2ddce5adf70c35cb" 
+#=> "0xf86f0f020180019fde8094eeee1973381ab793719fff497b9a516719fcd5a287038d7ea4c68000808001b845f8431ca029870ea74e51ca5f89749860875ce69d7afd8b9bff6debebf127d14a27a83043a044f8b98aaa128f8cf41f5556d7b8fddd224021ac7d28024daafed2362d4144b6" 
 ```
 
 #### Multi signatures
@@ -558,18 +500,14 @@ private_key2 = "49e48cd0f81e7aabfc840301c66f00318f50b25c79664c3f337d7ad4f919638e
 transaction = Minter::SendCoinTx.new(
     address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
     value: 4_000_000_000_000_000_000,
-    coin: "MNT",
+    coin: 0,
     nonce: 2,
     chain_id: 2,
-    gas_coin: "MNT",
+    gas_coin: 0,
     gas_price: 10
 )
 signed_tx = transaction.multisign(multisig_address, private_key1, private_key2)
-#=> #<Minter::SignedTx:0x00007fe340120090
-# @transaction=
-#  #<Minter::SendCoinTx:0x00007fe3411da908 @address_to="Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497", @chain_id=2, @coin="MNT", @gas_coin="MNT", @gas_price=10, @nonce=2, @value=4000000000000000000>,
-# @tx_hash=
-#  "0xf8e202020a8a4d4e540000000000000001aae98a4d4e540000000000000094e7812ab98ac5ac37e2ab20da3136ad91bb22d497883782dace9d900000808002b8a3f8a194eda4bb5456f5eb8a19f57c8c6ec844d05feae879f88af8431ba0287dd3956acae624abc25e6ba60018f60a80e144f5678ceb35c35613fcd363bfa01886706c7ffa0e6ccfc7c3dda186d3e8beea5214c30502ad9a24d8a29ced685af8431ba0302a560b420ed0da95f4f8425ac605a2462d35449e44557f152c4308845e1710a04cd1b834752e3a26b0fd543a20e3ef99ca233b049e064146c6a8cdf19d895552">
+#=> #<Minter::SignedTx:0x00007f97f0249ca0 @tx_hash="0xf8ce02020a8001a0df8094e7812ab98ac5ac37e2ab20da3136ad91bb22d497883782dace9d900000808002b8a3f8a194eda4bb5456f5eb8a19f57c8c6ec844d05feae879f88af8431ca04613dae08d6d729a2cb55cd1ef508fcabbd516c219cca15cff61bd5cff0dca2fa06dd29d4fa41517b1701520412f2892b82a10b0fd9b7ddf00060105d418e78f3bf8431ba0d13870020138ae7d6bc14dff8a720c97767af19b648facddb997a8c7baa771c2a01879cee21cd8e315752eae1190981541418fe49ff3def116fd123a2fd066ba84", @transaction=#<Minter::SendCoinTx:0x00007f97f11b2a48 @address_to="Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497", @value=4000000000000000000, @coin=0, @nonce=2, @chain_id=2, @gas_coin=0, @gas_price=10>> 
 ```
 
 ### Create transaction
@@ -585,15 +523,15 @@ value - Amount of Coin to send.
 ##### Example
 
 ```ruby
-Minter::SendCoinTx.new(
-      address_to: "Mxe7812ab98ac5ac37e2ab20da3136ad91bb22d497",
-      value: 24_000_000_000_000_000_000,
-      coin: "MNT",
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 10
-    )
+transaction = Minter::SendCoinTx.new(
+        address_to: "Mx1b685a7c1e78726c48f619c497a07ed75fe00483",
+        value: 1_000_000_000_000_000_000,
+        coin: 1,
+        nonce: 1,
+        chain_id: 2,
+        gas_coin: 1,
+        gas_price: 1
+      )
 ```
 
 #### Sell coin transaction
@@ -609,13 +547,13 @@ minimum_value_to_buy - Minimum value of coins to get.
 
 ```ruby
 Minter::SellCoinTx.new(
-      coin_to_sell: "MNT",
+      coin_to_sell: 1,
       value_to_sell: 1_000_000_000_000_000_000,
-      coin_to_buy: "TEST",
+      coin_to_buy: 2,
       minimum_value_to_buy: 1_000_000_000_000_000_000,
       nonce: 1,
       chain_id: 2,
-      gas_coin: "MNT",
+      gas_coin: 1,
       gas_price: 1
     )
 ```
@@ -632,14 +570,14 @@ minimum_value_to_buy - Minimum value of coins to get.
 
 ```ruby
 Minter::SellAllCoinTx.new(
-      coin_to_sell: "MNT",
-      coin_to_buy: "TEST",
-      minimum_value_to_buy: 1_000_000_000_000_000_000,
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
-    )
+  coin_to_sell: 1,
+  coin_to_buy: 2,
+  minimum_value_to_buy: 1_000_000_000_000_000_000,
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: 1,
+  gas_price: 1
+)
 ```
 
 #### Buy coin transaction
@@ -654,16 +592,16 @@ maximum_value_to_sell - Maximum value of coins to sell.
 ##### Example
 
 ```ruby
-transaction = Minter::BuyCoinTx.new(
-      coin_to_buy: "TEST",
-      value_to_buy: 1_000_000_000_000_000_000,
-      coin_to_sell: "MNT",
-      maximum_value_to_sell: 1_000_000_000_000_000_000,
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
-    )
+Minter::BuyCoinTx.new(
+  coin_to_buy: 2,
+  value_to_buy: 1_000_000_000_000_000_000,
+  coin_to_sell: 1,
+  maximum_value_to_sell: 1_000_000_000_000_000_000,
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: 1,
+  gas_price: 1
+)
 ```
 
 #### Create coin transaction
@@ -679,17 +617,17 @@ initial_reserve - Initial reserve in BIP's. ConstantReserveRatio - CRR, uint, sh
 
 ```ruby
 Minter::CreateCoinTx.new(
-      name: "SUPER TEST",
-      symbol: "SPRTEST",
-      initial_amount: 100_000_000_000_000_000_000,
-      initial_reserve: 10_000_000_000_000_000_000,
-      reserve_ratio: 10,
-      max_supply: 1_000_000_000_000_000_000_000,
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
-    )
+  name: "SUPER TEST",
+  symbol: "SPRTEST",
+  initial_amount: 100_000_000_000_000_000_000,
+  initial_reserve: 20_000_000_000_000_000_000_000,
+  reserve_ratio: 10,
+  max_supply: 1_000_000_000_000_000_000_000,
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: 1,
+  gas_price: 1
+)
 ```
 
 #### Declare candidacy transaction
@@ -705,16 +643,16 @@ coin - Symbol of coin to stake. Stake - Amount of coins to stake.
 
 ```ruby
 Minter::DeclareCandidacyTx.new(
-      address: "Mx9f7fd953c2c69044b901426831ed03ee0bd0597a",
-      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
-      commission: 10,
-      coin: "MNT",
-      stake: 5_000_000_000_000_000_000,
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
-    )
+  address: "Mx9f7fd953c2c69044b901426831ed03ee0bd0597a",
+  pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+  commission: 10,
+  coin: 1,
+  stake: 5_000_000_000_000_000_000,
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: 1,
+  gas_price: 1
+)
 ```
 
 #### Delegate transaction
@@ -729,14 +667,14 @@ value - Amount of coins to stake.
 
 ```ruby
 Minter::DelegateTx.new(
-      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
-      coin: "MNT",
-      value: 10_000_000_000_000_000_000,
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
-    )
+  pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+  coin: 1,
+  value: 10_000_000_000_000_000_000,
+  nonce: 1,
+  chain_id: 2,
+  gas_coin: 1,
+  gas_price: 1
+)
 ```
 
 #### Unbond transaction
@@ -751,14 +689,14 @@ value - Amount of coins to stake.
 
 ```ruby
 Minter::UnbondTx.new(
-      pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
-      coin: "MNT",
-      value: 10_000_000_000_000_000_000,
-      nonce: 1,
-      chain_id: 2,
-      gas_coin: "MNT",
-      gas_price: 1
-    )
+    pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
+    coin: 1,
+    value: 10_000_000_000_000_000_000,
+    nonce: 1,
+    chain_id: 2,
+    gas_coin: 1,
+    gas_price: 1
+)
 ```
 
 #### Redeem check transaction
@@ -777,7 +715,7 @@ Minter::RedeemCheckTx.new(
       proof: proof,
       nonce: 1,
       chain_id: 2,
-      gas_coin: "MNT",
+      gas_coin: 1,
       gas_price: 1
     )
 ```
@@ -795,7 +733,7 @@ Minter::SetCandidateOnTx.new(
       pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
       nonce: 1,
       chain_id: 2,
-      gas_coin: "MNT",
+      gas_coin: 1,
       gas_price: 1
     )
 ```
@@ -813,7 +751,7 @@ Minter::SetCandidateOffTx.new(
       pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
       nonce: 1,
       chain_id: 2,
-      gas_coin: "MNT",
+      gas_coin: 1,
       gas_price: 1
     )
 ```
@@ -828,62 +766,41 @@ Minter::EditCandidateTx.new(
       pubkey: "Mp4ae1ee73e6136c85b0ca933a9a1347758a334885f10b3238398a67ac2eb153b8",
       reward_address: "Mx89e5dc185e6bab772ac8e00cf3fb3f4cb0931c47",
       owner_address: "Mxe731fcddd37bb6e72286597d22516c8ba3ddffa0",
+      control_address: "Mx1b685a7c1e78726c48f619c497a07ed75fe00483",
       nonce: 1,
       chain_id: 2,
-      gas_coin: "MNT",
+      gas_coin: 1,
       gas_price: 1
     )
 ```
 
-#### Create multisig address
-
-Transaction for creating multisignature address.
-
-```ruby
-address1 = "Mx08d920c5d93dbf23038fe1a54bbb34f41f77677c" 
-address2 = "Mx9c7f68ff71b5819c41e8f87cc99bdf6359da3d75" 
-address3 = "Mx9c7f68ff71b5819c41e8f87cc99bdf6359da3d75" 
-private_key =  "ae089b32e4e0976ca6888cb1023148bd1a9f1cc28c5d442e52e586754ff48d63"
-
-transaction = Minter::CreateMultisigAddressTx.new(
-    threshold: 7,
-    nonce: 11,
-    chain_id: 2,
-    gas_coin: "MNT",
-    gas_price: 1
-)
-
-transaction.add_address(address: address1, weight: 1)
-transaction.add_address(address: address2, weight: 3)
-transaction.add_address(address: address3, weight: 5)
-
-transaction.multisig_address
-=> "Mxc0edeaee8750330d01bcefcbd34198b2ef7b1167"
-```
 #### Multisend transaction
 
 Transaction for sending coins to multiple addresses.
 
 ```ruby
 transaction = Minter::MultiSendTx.new(
-  nonce: 1,
-  chain_id: 2,
-  gas_coin: "MNT",
-  gas_price: 1
+    nonce: 1,
+    chain_id: 2,
+    gas_coin: 1,
+    gas_price: 1
 )
-    
+
 transaction.add_item(
-  symbol: "MNT",
-  address_to: "Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99",
-  value: 100_000_000_000_000_000
+    coin_id: 1,
+    address_to: "Mxfe60014a6e9ac91618f5d1cab3fd58cded61ee99",
+    value: 100_000_000_000_000_000
 )
-    
+
 transaction.add_item(
-  symbol: "MNT",
-  address_to: "Mxddab6281766ad86497741ff91b6b48fe85012e3c",
-  value: 200_000_000_000_000_000
+    coin_id: 1,
+    address_to: "Mxddab6281766ad86497741ff91b6b48fe85012e3c",
+    value: 200_000_000_000_000_000
 )
+
+signed_tx = transaction.sign(private_key)
 ```
+
 ### Get fee of transaction
 ```ruby
 transaction = Minter::SendCoinTx.new(
@@ -900,45 +817,10 @@ transaction.fee
 #=> ""
 
 ```
-### Decode Transaction
 
-```ruby
-# IN PROGRESS
-```
-### Minter Deep Links
-
-```ruby
-# IN PROGRESS
-```
 More info about [Minter Link Protocol](https://github.com/MinterTeam/minter-link-protocol)
 
-### Minter Check
 
-Minter Check is like an ordinary bank check. Each user of network can issue check with any amount of coins and pass it to another person. Receiver will be able to cash a check from arbitrary account.
-
-* Create Issue Check. Nonce - unique "id" of the check. Coin Symbol - symbol of coin. Value - amount of coins. Due Block - defines last block height in which the check can be used.
-
-```ruby
-# IN PROGRESS
-```
-
-* Sign Issue Check
-
-```ruby
-# IN PROGRESS
-```
-
-* Prepare check string and convert to data
-
-```ruby
-# IN PROGRESS
-``` 
-
-* Proof check
-
-```ruby
-# IN PROGRESS
-```
 
 ### Minter Wallet
 
@@ -1014,7 +896,7 @@ To run tests:
 
 ```shell script
 bundle install
-rpsec
+rspec
 ```
 
 ## Development

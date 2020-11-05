@@ -10,7 +10,7 @@ RSpec.describe Minter::Api::CoinResource do
       response = client.coin_info(symbol: symbol, height: 1)
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      ["id", "name", "symbol", "volume", "crr", "reserve_balance", "max_supply"].each do |key|
+      %w[id name symbol volume crr reserve_balance max_supply].each do |key|
         expect(response.body[key]).not_to be_nil
       end
     end

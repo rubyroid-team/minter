@@ -11,7 +11,7 @@ RSpec.describe Minter::Api::CandidateResource do
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
       expect(response.body).not_to be_nil
-      ["reward_address", "owner_address", "control_address", "total_stake", "public_key", "commission", "used_slots", "uniq_users", "min_stake", "stakes", "status"].each do |key|
+      %w[reward_address owner_address control_address total_stake public_key commission used_slots uniq_users min_stake stakes status].each do |key|
         expect(response.body[key]).not_to be_nil
       end
     end

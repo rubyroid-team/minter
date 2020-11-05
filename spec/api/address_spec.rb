@@ -15,5 +15,4 @@ RSpec.describe Minter::Api::AddressResource do
       expect(response.body["bip_value"]).not_to be_nil
     end
   end
-
 end

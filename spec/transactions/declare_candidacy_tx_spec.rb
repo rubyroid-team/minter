@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::DeclareCandidacyTx do
   subject do
-    described_class.new(
+    Minter::DeclareCandidacyTx.new(
       address: "Mx9f7fd953c2c69044b901426831ed03ee0bd0597a",
       pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
       commission: 10,

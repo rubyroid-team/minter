@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::UnbondTx do
   subject do
-    described_class.new(
+    Minter::UnbondTx.new(
       pubkey: "Mp0eb98ea04ae466d8d38f490db3c99b3996a90e24243952ce9822c6dc1e2c1a43",
       coin: 1,
       value: 10_000_000_000_000_000_000,

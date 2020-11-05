@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::RedeemCheckTx do
   subject do
-    described_class.new(
+    Minter::RedeemCheckTx.new(
       check: check,
       proof: proof,
       nonce: 1,

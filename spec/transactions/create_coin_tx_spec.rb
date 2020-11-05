@@ -4,7 +4,7 @@ require "spec_helper"
 
 RSpec.describe Minter::CreateCoinTx do
   subject do
-    described_class.new(
+    Minter::CreateCoinTx.new(
       name: "SUPER TEST",
       symbol: "SPRTEST",
       initial_amount: 100_000_000_000_000_000_000,
