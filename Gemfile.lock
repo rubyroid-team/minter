@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    minter (0.4.1)
+    minter (0.5.0)
       dotenv (~> 2.7, >= 2.7.5)
       ffi (~> 1.12, >= 1.12.2)
       http (~> 4.4, >= 4.4.1)

@@ -4,9 +4,8 @@ module Minter
   module Api
     module SendTransactionResource
       def send_transaction(transaction:)
-        params = { tx: transaction }
-        path = "/send_transaction"
-        get(path, params)
+        path = "/send_transaction/#{transaction}"
+        get(path)
       end
     end
   end

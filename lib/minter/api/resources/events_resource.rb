@@ -5,9 +5,8 @@ module Minter
     module EventsResource
       def events(height: nil)
         height ||= 1
-        params = { height: height }
-        path = "/events"
-        get(path, params)
+        path = "/events/#{height}"
+        get(path)
       end
     end
   end

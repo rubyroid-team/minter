@@ -4,10 +4,9 @@ module Minter
   module Api
     module BlockResource
       def block(height:)
-        params = { height: height }
-        path = "/block"
+        path = "/block/#{height}"
 
-        get(path, params)
+        get(path)
       end
     end
   end

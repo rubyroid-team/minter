@@ -4,9 +4,8 @@ module Minter
   module Api
     module TransactionsResource
       def transaction_info(transaction_hash:)
-        params = { hash: transaction_hash }
-        path = "/transaction"
-        get(path, params)
+        path = "/transaction/#{transaction_hash}"
+        get(path)
       end
 
       def transactions(query:, page: 1, per_page: 10)

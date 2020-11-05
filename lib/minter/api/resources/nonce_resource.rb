@@ -4,10 +4,9 @@ module Minter
   module Api
     module NonceResource
       def nonce(address:)
-        params = { address: address }.compact
-        path = "/address"
-        response = get(path, params)
-        response.body["result"]["transaction_count"].to_i + 1
+        path = "/address/#{address}"
+        response = get(path)
+        response.body["transaction_count"].to_i + 1
       end
     end
   end

@@ -9,7 +9,6 @@ RSpec.describe Minter::Api::MaxGasResource do
       response = client.max_gas
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
     end
   end
 end

@@ -4,8 +4,8 @@ module Minter
   module Api
     module CoinResource
       def coin_info(symbol:, height:)
-        params = { symbol: symbol, height: height }
-        path = "/coin_info"
+        params = { height: height }
+        path = "/coin_info/#{symbol}"
         get(path, params)
       end
     end

@@ -9,9 +9,9 @@ RSpec.describe Minter::Api::BlockResource do
       response = client.block(height: 1)
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      %w[hash height num_txs transactions block_reward size].each do |key|
-        expect(response.body["result"][key]).not_to be_nil
+      expect(response.body).not_to be_nil
+      %w[hash height transaction_count transactions block_reward size validators].each do |key|
+        expect(response.body[key]).not_to be_nil
       end
     end
   end

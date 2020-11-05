@@ -10,22 +10,10 @@ RSpec.describe Minter::Api::AddressResource do
       response = client.address(address: address)
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      # binding.pry
-      expect(response.body["result"]["balances"]).not_to be_nil
-      expect(response.body["result"]["transaction_count"]).not_to be_nil
+      expect(response.body["balance"]).not_to be_nil
+      expect(response.body["transaction_count"]).not_to be_nil
+      expect(response.body["bip_value"]).not_to be_nil
     end
   end
 
-  describe "addresses" do
-    it "get address info" do
-      client = Minter::Api::Client.new
-      response = client.addresses
-      expect(response.status).to eq 200
-      expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      expect(response.body["result"]["balances"]).not_to be_nil
-      expect(response.body["result"]["transaction_count"]).not_to be_nil
-    end
-  end
 end

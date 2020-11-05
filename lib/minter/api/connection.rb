@@ -26,6 +26,12 @@ module Minter
         Minter::Api::Result.new(response)
       end
 
+      def post(path, params = {})
+        response = connection.post(build_url(config[:node_url], path), params: params)
+
+        Minter::Api::Result.new(response)
+      end
+
       def connection
         @connection ||= new_connection
       end

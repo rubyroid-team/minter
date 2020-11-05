@@ -10,9 +10,9 @@ RSpec.describe Minter::Api::CandidateResource do
       response = client.candidate(public_key: public_key)
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      %w[reward_address owner_address total_stake pub_key commission stakes status].each do |key|
-        expect(response.body["result"][key]).not_to be_nil
+      expect(response.body).not_to be_nil
+      ["reward_address", "owner_address", "control_address", "total_stake", "public_key", "commission", "used_slots", "uniq_users", "min_stake", "stakes", "status"].each do |key|
+        expect(response.body[key]).not_to be_nil
       end
     end
   end
@@ -23,8 +23,7 @@ RSpec.describe Minter::Api::CandidateResource do
       response = client.candidates
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      expect(response.body["result"]).to be_a(Array)
+      expect(response.body["candidates"]).to be_a(Array)
     end
   end
 end

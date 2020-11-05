@@ -26,9 +26,8 @@ RSpec.describe Minter::Api::SendTransactionResource do
       response = transaction.sign(sender_private_key).send
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      %w[code data log hash].each do |key|
-        expect(response.body["result"][key]).not_to be_nil
+      %w[code log hash].each do |key|
+        expect(response.body[key]).not_to be_nil
       end
     end
   end

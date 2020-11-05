@@ -9,9 +9,9 @@ RSpec.describe Minter::Api::ValidatorsResource do
       response = client.validators
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      expect(response.body["result"]).to be_a(Array)
-      expect(response.body["result"].first["pub_key"]).not_to be_nil
+      expect(response.body).to be_a(Hash)
+      expect(response.body['validators']).to be_a(Array)
+      expect(response.body["validators"].first["public_key"]).not_to be_nil
     end
   end
 end

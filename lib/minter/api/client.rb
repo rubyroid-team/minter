@@ -8,6 +8,9 @@ require_relative "connection"
 module Minter
   module Api
     class Client
+
+      DEFAULT_NODE_URL = "https://node-api.testnet.minter.network/v2"
+
       attr_accessor :node_url, :authenticated_api_url, :api_version
       attr_accessor :proxy, :connect_timeout, :read_timeout, :write_timeout
 
@@ -31,7 +34,7 @@ module Minter
       API_VERSION = 2
 
       def initialize(args = {})
-        self.node_url = ENV["NODE_URL"]
+        self.node_url = ENV["NODE_URL"] || DEFAULT_NODE_URL
         self.connect_timeout = args[:connect_timeout] || DEFAULT_TIMEOUT
         self.read_timeout = args[:read_timeout] || DEFAULT_TIMEOUT
         self.write_timeout = args[:write_timeout] || DEFAULT_TIMEOUT

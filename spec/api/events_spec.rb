@@ -9,8 +9,7 @@ RSpec.describe Minter::Api::EventsResource do
       response = client.events
       expect(response.status).to eq 200
       expect(response.body).not_to be_nil
-      expect(response.body["result"]).not_to be_nil
-      expect(response.body["result"]["events"]).to be_a(Array)
+      expect(response.body["events"]).to be_a(Array)
     end
   end
 end

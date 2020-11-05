@@ -4,8 +4,8 @@ module Minter
   module Api
     module CandidateResource
       def candidate(public_key:, height: nil)
-        path = "/candidate"
-        params = { pub_key: public_key, height: height }.compact
+        path = "/candidate/#{public_key}"
+        params = { height: height }.compact
         get(path, params)
       end
 

@@ -4,18 +4,14 @@ module Minter
   module Api
     module AddressResource
       def address(address:, height: nil)
-        params = { address: address, height: height }.compact
-        path = "/address"
+        params = { height: height }.compact
+        path = "/address/#{address}"
 
         get(path, params)
       end
 
       alias balance address
 
-      def addresses(_params = {})
-        path = "/address"
-        get(path)
-      end
     end
   end
 end
